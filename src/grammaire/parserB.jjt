@@ -1,0 +1,384 @@
+options {
+	STATIC = false;
+	VISITOR=true;
+	VISITOR_EXCEPTION = "ParserBException";
+	NODE_DEFAULT_VOID=true;
+	MULTI = true;
+}
+
+
+PARSER_BEGIN(ParserB)
+
+package grammaire ;
+
+import java.io.*;
+import java.util.*;
+
+public class ParserB {
+
+
+}
+
+PARSER_END(ParserB)
+
+
+SKIP : {
+  < [" ", "\t", "\n", "\r", "\u00a0"] >
+}
+
+SKIP : {
+	"/*" : WithinComment
+}
+
+<WithinComment> SKIP : {
+	"*/" : DEFAULT
+}
+
+<WithinComment> MORE:
+{
+  < ~[] >
+}
+
+TOKEN : {
+
+  	<Machine: "MACHINE">
+|  	<End : "END">
+|  	<Sets : "SETS">
+|  	<Invariant : "INVARIANT">
+|  	<Variables : "VARIABLES">
+|  	<Operations : "OPERATIONS">
+| 	<Events : "EVENTS">
+|	<Constraints : "CONSTRAINTS">
+|	<Constants : "CONSTANTS">
+|	<Properties : "PROPERTIES">
+|	<ConcreteVariables : "CONCRETE_VARIABLES">
+|	<AbstractVariables : "ABSTRACT_VARIABLES">
+|	<ConcreteConstants : "CONCRETE_CONSTANTS">
+|	<AbstractConstants : "ABSTRACT_CONSTANTS">
+|	<Initialisation : "INITIALISATION" >
+|	<Definitions : "DEFINITIONS">
+|	<Values : "VALUES">
+|	<Begin : "BEGIN">
+|	<Pre : "PRE">
+|	<If : "IF">
+|	<Then : "THEN">
+|	<Elsif : "ELSIF">
+|	<Else : "ELSE">
+|	<Any : "ANY">
+|	<Where : "WHERE">
+|	<Let : "LET">
+|	<Be : "BE">
+|	<InLetVar : "IN">
+|	<Choice : "CHOICE">
+|	<OrC : "OR">
+|	<Select : "SELECT">
+|	<When : "WHEN">
+|	<Case : "CASE">
+|	<Of : "OF">
+|	<Either : "EITHER">
+|	<Var : "VAR">
+|	<While : "WHILE">
+|	<Do : "DO">
+|	<Variant : "VARIANT">
+
+|	<EmptySet : "{" (" ")* "}">
+|	<EmptySequence : "[" (" ")* "]">
+|	<EmptySequenceOld : "<>">
+
+
+|	<Equivalence : "<=>">
+|	<Subset : "<:">
+|	<NotSubset : "/<:">
+|	<Implication : "=>">
+|	<StrictSubset : "<<:">
+|	<NotStrictSubset : "/<<:">
+|	<NotSetMemberShip : "/:">
+|	<NotEqual : "/=">
+
+|	<LessThanOrEqual : "<=">
+|	<GreatherThanOrEqual : ">=">
+
+
+|	<Relation : "<->">
+|	<PartialSurjection : "+->>">
+|	<PartialFunction: "+->">
+|	<TotalSurjection : "-->>">
+|	<TotalFunction : "-->">
+|	<PartialBijection : ">+>>">
+|	<PartialInjection : ">+>">
+|	<TotalBijection : ">->>">
+|	<TotalInjection : ">->">
+
+|	<OperationReturn : "<--">
+|	<DevientEgal : ":=">
+
+|	<OpenCurly : "[">
+|	<CloseCurly : "]">
+
+|	<Maplet : "|->">
+
+|	<DomainSubstraction : "<<|">
+|	<DomainRestriction : "<|">
+|	<RangeSubstraction : "|>>">
+|	<RangeRestriction : "|>">
+|	<Override : "<+">
+|	<DirectProduct : "><">
+|	<PrependSequence : "->">
+|	<AppendSequence : "<-">
+|	<PrefixSequence : "/|\\">
+|	<SuffixSequence : "\\|/">
+
+|	<SetIn : "::">
+|	<EqualEqual : "==">
+|	<NatRange : "..">
+|	<Power : "**">
+
+|	<Union : "\\/">
+|	<Intersection : "/\\">
+
+|	<Lambda : "%">
+|	<SuchAs : "|">
+|	<Forall : "!">
+|	<Exists : "#">
+|	<Tilde : "~">
+|	<OpenBraces : "{">
+|	<CloseBraces : "}">
+|  	<Point : ".">
+|  	<OpenParen : "(">
+|  	<CloseParen : ")">
+|	<Comma : ",">
+|	<Or : "or">
+|	<And  : "&">
+|	<Not : "not">
+|	<Skip : "skip">
+|	<Minus : "-">
+|	<Plus : "+">
+|	<Product : "*">
+|	<Division : "/">
+|	<Modulo : "mod">
+|	<Equal : "=">
+|	<ConcatSequence : "^">
+|	<LessThan : "<">
+|	<GreatherThan : ">">
+
+|	<In : ":">
+|	<DollarZero : "$0">
+
+| 	<Composition : "°">
+|	<ParallelProduct : "//">
+|	<SetMinus : "\\">
+
+|	<Parallel : "||">
+|	<SemiColon : ";">
+|	<Quote : "'">
+
+|	<Prj1 : "prj1">
+|	<Prj2 : "prj2">
+|	<POW : "POW">
+|	<FIN : "FIN">
+|	<POW1 : "POW1">
+|	<FIN1 : "FIN1">
+|	<InterGen : "inter">
+|	<UnionGen : "union">
+|	<UnionQuant : "UNION">
+|	<InterQuant : "INTER">
+|	<Id : "id">
+|	<Dom : "dom">
+|	<Ran : "ran">
+|	<Iterate : "iterate">
+|	<Closure : "closure">
+|	<Closure1 : "closure1">
+|	<Card : "card">
+|	<Max : "max">
+|	<Min : "min">
+|   <Succ : "succ">
+|	<Pred : "pred">
+|	<Sigma : "SIGMA">
+|	<Pi : "PI">
+|	<Seq : "seq">
+|	<Iseq : "iseq">
+|	<Seq1 : "seq1">
+|	<Iseq1 : "iseq1">
+|	<Perm : "perm">
+|	<Conc : "conc">
+|	<Front : "front">
+|	<Tail : "tail">
+|	<First : "first">
+|	<Last : "last">
+|	<Size : "size">
+|	<Rev : "rev">
+|	<Fnc : "fnc">
+|	<Rel : "rel">
+|	<Bool : "bool">
+
+|	<Nat : "NAT">
+|	<Nat1 : "NAT1">
+|	<Natural : "NATURAL">
+|	<Natural1 : "NATURAL1">
+|	<Int : "INT">
+|	<Integer : "INTEGER">
+|	<True : "TRUE">
+|	<False : "FALSE">
+|	<Boolean : "BOOL">
+|	<StringSet : "STRING">
+|	<MaxInt : "MAXINT">
+|	<MinInt : "MININT">
+
+}
+
+TOKEN : {
+	<IDENTIFIER : ["a"-"z","A"-"Z","_"] (["a"-"z","A"-"Z","_","0"-"9"])*>
+}
+
+TOKEN : {
+	<String:
+      		"\""
+      		(         (~["\"","\\","\n","\r"])
+        		| ("\\"
+            			(   ["n","t","b","r","f","\\","'","\""]
+            			  | ["0"-"7"] ( ["0"-"7"] )?
+            			  | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+           			)
+          		  )
+      		)*
+          	"\""
+  	>
+}
+
+TOKEN : {
+	<Number : (["0"-"9"])+ >
+}
+
+ASTStart Start() #Start : {} {
+  Composant()
+  { return jjtThis; }
+}
+
+void Composant() : {} {
+   Machine_abstraite ()
+}
+
+void Machine_abstraite () #Machine : {} {
+	<Machine> EnTete() (ClauseMachineAbstraite())* <End>
+}
+
+void Clause_machine_abstraite() : {} {
+	Clause_constraints()
+	|  Clause_sets()
+	|  Clause_concrete_constants()
+	|  Clause_abstract_constants()
+	|  Clause_properties()
+	|  Clause_concrete_variables()
+	|  Clause_abstract_variables()
+	|  Clause_invariant()
+	|  Clause_initialisation()
+	|  Clause_operations()
+}
+
+void EnTete() #EnTete : {} {
+	Ident() [<OpenParen> Ident()(<Comma> Ident())* <CloseParen>]
+}
+
+void Clause_constraints () #Constraints : {} {
+	<Constraints> Predicat()
+}
+
+void Instanciation() : {} {
+		Terme()
+	|   Ensemble_entier() 
+	|  	<Boolean>
+	|  	Intervalle()
+}
+
+void Clause_sets () #Sets : {} {
+	<Sets> Ensemble() (<SemiColon> Ensemble())*
+}
+
+void Ensemble() #Ensemble : {} {
+  Ident() [<Equal> <OpenBraces> Ident() (<Comma> Ident())*  <CloseBraces>]
+}
+
+void Clause_concrete_constants() #ConcreteConstants : {} {
+	(<ConcreteConstants> | <Constants> ) Ident() (<Comma> Ident())*
+}
+
+void Clause_abstract_constants() #AbstractConstants : {} {
+	<AbstractConstants> Ident() (<Comma> Ident())*
+}
+
+void Clause_properties() #Properties : {} {
+	<Properties> Predicat()
+}
+
+void Clause_values() #Values : {} {
+	<Values> Valuation() (<SemiColon> Valuation())*
+}
+
+void Valuation() #Value : {} {
+	Identifier() <Equal> (Terme() | ExprTableau())
+}
+
+void Clause_concrete_variables() #ConcreteVariables : {} {
+	<ConcreteVariables> Ident_ren() (<Comma> Ident_ren())*
+}
+
+void Clause_abstract_variables() #AbstractVariables : {} {
+	(<AbstractVariables> | <Variables>) Ident_ren() (<Comma> Ident_ren())*
+}
+
+void Clause_invariant() #Invariant : {} {
+	<Invariant> Predicat()
+}
+
+void Clause_initialisation() #Initialisation : {} {
+	<Initialisation> Substitution()
+}
+
+void Clause_operations() #Operations  : {} {
+	<Operations> Operation() (<SemiColon> Operation())*
+}
+
+void Operation() #Operation : {} {
+	Entete_operation() <Equal> Substitution_corps_operation()
+}
+
+void Entete_operation() #EnteteOperation : {} {
+	[Ident() (<Semicolon> Ident())* <OperationReturn> ] Ident_ren()
+	 [<OpenParen> Ident()(<Comma> Ident())* <CloseParen>]
+}
+
+void Terme() #Terme : {} {
+	Terme_simple()
+| 	Expression_arithmetique()
+| 	Terme_record() ([<OpenParen> <Quote > Ident() <CloseParen>])*
+} 
+
+void Terme_simple() #TermeSimple : {} {
+	Ident_ren() ([<OpenParen> <Quote > Ident() <CloseParen>])*
+| 	Entier_lit()
+| 	Booléen_lit()
+| 	<Boolean> <OpenParen> Condition() <CloseParen>
+}
+
+void Entier_lit() #EntierLit : {} {
+	<Number>
+| 	<MaxInt>
+| 	<MinInt>
+}
+
+void Booleen_lit() #EntierLit : {} {
+	<False>
+| 	<True>
+}
+
+void Expression_arithmetique() #ExprArith : {} {
+	Entier_lit()
+| 	Ident_ren()
+[
+	(<OpenParen > Terme() (<Comma> Terme())* <CloseParen>)
+	| (< Quote > Ident() (< Quote > Ident())*)
+]
+| < Plus > 
+| 
+
+}
