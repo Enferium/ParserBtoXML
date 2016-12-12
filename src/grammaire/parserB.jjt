@@ -45,6 +45,7 @@ TOKEN : {
 |  	<End : "END">
 |  	<Sets : "SETS">
 |  	<Invariant : "INVARIANT">
+|  	<Assert : "ASSERT">
 |  	<Variables : "VARIABLES">
 |  	<Operations : "OPERATIONS">
 | 	<Events : "EVENTS">
@@ -209,6 +210,7 @@ TOKEN : {
 |	<Rev : "rev">
 |	<Fnc : "fnc">
 |	<Rel : "rel">
+|	<Rec : "rec">
 |	<Bool : "bool">
 
 |	<Nat : "NAT">
@@ -254,6 +256,14 @@ ASTStart Start() #Start : {} {
   { return jjtThis; }
 }
 
+void Donnee() : { } {
+	Ident_ren()
+}
+
+void Ident_ren() : { } {
+	< IDENTIFIER > (< Point > < IDENTIFIER >)*
+}
+
 void Composant() : {} {
    Machine_abstraite ()
 }
@@ -276,7 +286,7 @@ void Clause_machine_abstraite() : {} {
 }
 
 void EnTete() #EnTete : {} {
-	Ident() [<OpenParen> Ident()(<Comma> Ident())* <CloseParen>]
+	<IDENTIFIER> [<OpenParen> <IDENTIFIER>(<Comma> <IDENTIFIER>)* <CloseParen>]
 }
 
 void Clause_constraints () #Constraints : {} {
@@ -295,15 +305,15 @@ void Clause_sets () #Sets : {} {
 }
 
 void Ensemble() #Ensemble : {} {
-  Ident() [<Equal> <OpenBraces> Ident() (<Comma> Ident())*  <CloseBraces>]
+  <IDENTIFIER> [<Equal> <OpenBraces> <IDENTIFIER> (<Comma> <IDENTIFIER>)*  <CloseBraces>]
 }
 
 void Clause_concrete_constants() #ConcreteConstants : {} {
-	(<ConcreteConstants> | <Constants> ) Ident() (<Comma> Ident())*
+	(<ConcreteConstants> | <Constants> ) <IDENTIFIER> (<Comma> <IDENTIFIER>)*
 }
 
 void Clause_abstract_constants() #AbstractConstants : {} {
-	<AbstractConstants> Ident() (<Comma> Ident())*
+	<AbstractConstants> <IDENTIFIER> (<Comma> <IDENTIFIER>)*
 }
 
 void Clause_properties() #Properties : {} {
@@ -343,42 +353,407 @@ void Operation() #Operation : {} {
 }
 
 void Entete_operation() #EnteteOperation : {} {
-	[Ident() (<Semicolon> Ident())* <OperationReturn> ] Ident_ren()
-	 [<OpenParen> Ident()(<Comma> Ident())* <CloseParen>]
+	[<IDENTIFIER> (<Semicolon> <IDENTIFIER>)* <OperationReturn> ] Ident_ren()
+	 [<OpenParen> <IDENTIFIER>(<Comma> <IDENTIFIER>)* <CloseParen>]
 }
 
 void Terme() #Terme : {} {
 	Terme_simple()
 | 	Expression_arithmetique()
-| 	Terme_record() ([<OpenParen> <Quote > Ident() <CloseParen>])*
+| 	Terme_record() ([<OpenParen> <Quote > <IDENTIFIER> <CloseParen>])*
 } 
 
 void Terme_simple() #TermeSimple : {} {
-	Ident_ren() ([<OpenParen> <Quote > Ident() <CloseParen>])*
+	Ident_ren() ([<OpenParen> <Quote > <IDENTIFIER> <CloseParen>])*
 | 	Entier_lit()
-| 	Booléen_lit()
+| 	Boolean_lit()
 | 	<Boolean> <OpenParen> Condition() <CloseParen>
 }
 
-void Entier_lit() #EntierLit : {} {
+void Entier_lit() #Entier_Lit : {} {
 	<Number>
 | 	<MaxInt>
 | 	<MinInt>
 }
 
-void Booleen_lit() #EntierLit : {} {
+void Boolean_lit() #Boolean_Lit : {} {
 	<False>
 | 	<True>
 }
 
+void Terme_record() #Terme_record : {} {
+	< Rec > <OpenParen > [<IDENTIFIER > <In >] (Terme() | Expr_tableau()) (< Comma > [<IDENTIFIER > <In >](Terme() | Expr_tableau()))* < CloseParen >
+}
+
+void Expr_tableau() #Expr_tableau : {} {
+	< IDENTIFIER >
+| 	< OpenBraces > Terme_simple() (< Maplet > Terme_simple())* < Maplet > Terme() ( < Comma > Terme_simple() (< Maplet > Terme_simple())* < Maplet > Terme())* < CloseBraces >
+| 	Ensemble_simple() (< Product > Ensemble_simple()) < Product > <OpenBraces > Terme() < CloseBraces >
+}
+
+void Condition() #Condition : { } {
+	Terme_simple() < Equal > Terme_simple()
+| 	Terme_simple() < NotEqual >  Terme_simple()
+| 	Terme_simple() < LessThan >  Terme_simple()
+| 	Terme_simple() < GreatherThan >  Terme_simple()
+| 	Terme_simple() < LessThanOrEqual >  Terme_simple()
+| 	Terme_simple() < GreatherThanOrEqual >  Terme_simple()
+| 	Condition()  < And >  Condition()
+| 	Condition()  < Or >  Condition()
+| 	< Not > Condition()
+|  < OpenParen > Condition() < CloseParen >
+}
+
+void Instruction() #Instruction: {} {
+	Instruction_bloc()
+| 	Instruction_variable_local()
+| 	Substitution_identite()
+| 	Instruction_devient_egal()
+| 	Instruction_appel_operation()
+| 	Instruction_conditionnelle()
+| 	Instruction_cas()
+| 	Instruction_assertion()
+| 	Instruction_sequence()
+| 	Substitution_tant_que()
+}
+
+void Instruction_corps_operation() #Instruction_corps_operation: {} {
+	Instruction_bloc()
+| 	Instruction_variable_local()
+| 	Substitution_identite()
+| 	Instruction_devient_egal()
+| 	Instruction_appel_operation()
+| 	Instruction_conditionnelle()
+| 	Instruction_cas()
+| 	Instruction_assertion()
+| 	Substitution_tant_que()
+}
+
+void Instruction_bloc() #Instruction_bloc : {} {
+	< Begin > Instruction() < End > 
+}
+
+void Instruction_variable_local() #Instruciton_variable_local : { } {
+	< Var > < IDENTIFIER > (< Comma > < IDENTIFIER > )* < In > Instruction() < End > 
+}
+
+void Instruction_devient_egal() #Instruction_devient_egal : {} {
+	Ident_ren() [< OpenParen > Terme() (< Comma > Terme())* < CloseParen >] < DevientEgal > Terme()
+| 	Ident_ren() < DevientEgal > Expr_tableau()
+|  	Ident_ren() < Quote > < IDENTIFIER > ( < Quote > < IDENTIFIER > )* < DevientEgal > Terme()  
+}
+
+void Instruction_appel_operation() #Instruction_appel_operation : {} {
+	[Ident_ren() (< Comma > Ident_ren())* < OperationReturn >] Ident_ren() [< OpenParen > (Terme() | < String >) (< Comma > (Terme() | < String >))* < CloseParen > ]  
+}
+
+// TODO: Recursivité à gauche (indirect)
+void Instruction_sequence() #Instruction_sequence : {} {
+	Instruction() < SemiColon > Instruction() 
+}
+
+void Instruction_conditionnelle() #Instruction_conditionnelle : {} {
+	< If > Condition() < Then > Instruction() (< Elsif > Condition() < Then > Instruction())* [< Else > Instruction() ] < End >   
+}
+
+void Instruction_cas() #Instruction_cas : {} {
+	< Case > Terme_simple() < Of > < Either > Terme_simple() (< Comma > Terme_simple() )* < Then > Instruction()
+	( < Or > Terme_simple() (< Comma > Terme_simple() )* < Then > Instruction())*
+	[< Else > Instruction() ]
+	< End > < End > 
+}
+
+void Substitution_tant_que() #Substitution_tant_que : {} {
+	< While > Condition() < Do > Instruction() < Invariant > Predicat() < Variant > Expression() < End >   
+}
+
+void Instruction_assertion() #Instruction_assertion : {} {
+	< Assert > Condition() < Then > Instruction() < End > 
+}
+
+void Predicat() #predicat : {} {
+	Predicat_Parenthese()
+| Predicat_Conjonction()
+| Predicat_Negation()
+| Predicat_Disjonction()
+| Predicat_Implication()
+| Predicat_Equivalence()
+| Predicat_Universel()
+| Predicat_Existentiel()
+| Predicat_Egalite()
+| Predicat_Inegalite()
+| Predicat_Appartenance()
+| Predicat_Non_Appartenance()
+| Predicat_Inclusion()
+| Predicat_Inclusion_Stricte()
+| Predicat_Non_Inclusion()
+| Predicat_Non_Inclusion_Stricte()
+| Predicat_Inferieur_Ou_Egal()
+| Predicat_Strictement_Inferieur()
+| Predicat_Superieur_Ou_Egal()
+| Predicat_Strictement_Superieur()
+}
+
+void  Predicat_Parenthese() #Predicat_parenthese : {}{
+< OpenParen > Predicat() < CloseParen > 
+}
+
+void  Predicat_Conjonction() #Predicat_Conjonction : {}{
+ Predicat() < And > Predicat() 
+}
+
+void  Predicat_Negation() #Predicat_Negation : {}{
+< Not > < OpenParen > Predicat() < CloseParen > 
+}
+
+void  Predicat_Disjonction() #Predicat_Disjonction : {}{
+ Predicat() < OR > Predicat() 
+}
+
+void  Predicat_Implication() #Predicat_Implication : {}{
+ Predicat() < Implication >  Predicat() 
+}
+
+void  Predicat_Equivalence() #Predicat_Equivalence : {}{
+ Predicat() < Equivalence >  Predicat() 
+}
+
+void  Predicat_Universel() #Predicat_Universel : {}{
+ < Forall > Liste_Ident() < Point > < OpenParen > Predicat() < Implication > Predicat() < CloseParen >
+}
+
+void  Predicat_Existentiel() #Predicat_Existentiel : {}{
+ < Exists >  Liste_Ident() < Point > < OpenParen > Predicat() < CloseParen >
+}
+
+void  Predicat_Egalite() #Predicat_Egalite : {}{
+ Expression() < Equal > Expression()
+}
+
+void  Predicat_Inegalite() #Predicat_Inegalite : {}{
+ Expression() < NotEqual >  Expression()
+}
+
+void  Predicat_Appartenance() #Predicat_Appartenance : {}{
+ Expression() < In > Expression()
+}
+
+void  Predicat_Non_Appartenance() #Predicat_Not_Appartenance : {}{
+ Expression() < NotSetMemberShip >  Expression()
+}
+
+void  Predicat_Inclusion() #Predicat_Inclusion : {}{
+ Expression() < Subset >  Expression()
+}
+
+void  Predicat_Inclusion_Stricte() #Predicat_Insclusion_Stricte : {}{
+ Expression() < StrictSubset >  Expression()
+}
+
+void  Predicat_Non_Inclusion() #Predicat_Non_Inclusion : {}{
+ Expression() < NotSubset >  Expression()
+}
+
+void  Predicat_Non_Inclusion_Stricte() #Predicat_Non_Inclusion_Stricte : {}{
+ Expression() < NotStrictSubset >  Expression()
+}
+
+void  Predicat_Inferieur_Ou_Egal() #Predicat_Inferieur_Ou_Egal : {}{
+ Expression() < LessThanOrEqual >  Expression()
+}
+
+void  Predicat_Strictement_Inferieur() #Predicat_Strictement_Inferieur : {}{
+ Expression() < LessThan >  Expression()
+}
+
+void  Predicat_Strictement_Superieur() #Predicat_Strictement_Superieur : {}{
+ Expression() < GreatherThan >  Expression()
+}
+
+void  Predicat_Superieur_Ou_Egal() #Predicat_Superieur_Ou_Egal : {}{
+ Expression() < GreatherThanOrEqual >  Expression()
+}
+
+void Expression() #Expression : { } {
+	 Expression_primaire()
+|    Expression_booleenne()
+|    Expression_arithmetique()
+|    Expression_de_couples()
+|    Expression_d_ensembles()
+|    Construction_d_ensembles()
+|    Expression_de_records()
+|    Expression_de_relations()
+|    Expression_de_fonctions()
+|    Construction_de_fonctions()
+|    Expression_de_suites()
+|    Construction_de_suites()
+|    Expression_d_arbres()
+}
+
+void Expression_primaire () #Expression_primaire : { } {
+	Donnee()
+| 	Expression_paranthese()
+| 	< String > 
+}
+
+void Expression_booleenne () #Expression_booleenne : { } {
+	Boolean_lit() 
+| 	Conversion_bool() 
+}
+
+
 void Expression_arithmetique() #ExprArith : {} {
-	Entier_lit()
-| 	Ident_ren()
+	Entier_lit() ExpArithBis() 
+| 	Ident_ren() 
 [
 	(<OpenParen > Terme() (<Comma> Terme())* <CloseParen>)
-	| (< Quote > Ident() (< Quote > Ident())*)
-]
-| < Plus > 
-| 
-
+	| (< Quote > <IDENTIFIER> (< Quote > <IDENTIFIER>)*)
+]  ExpArithBis() 
+|	< Minus > Expression_arithmetique() ExpArithBis() 
+|  	< Succ > <OpenParen > Expression_arithmetique() < CloseParen >  ExpArithBis() 
+|  	< Pred > <OpenParen > Expression_arithmetique() < CloseParen >  ExpArithBis() 
+|	< OpenParen > Expression_arithmetique() < CloseParen >  ExpArithBis()
+| 	< Max > < OpenParen > Expression_arithmetique() < CloseParen > ExpArithBis()
+| 	< Min > < OpenParen > Expression_arithmetique() < CloseParen > ExpArithBis()
+| 	< Card > < OpenParen > Expression_arithmetique() < CloseParen > ExpArithBis()
+| 	< Sigma > Liste_ident() < Point > < OpenParen > Predicat() < SuchAs > Expression() < CloseParen > ExpArithBis()
+| 	< Pi > Liste_ident() < Point > < OpenParen > Predicat() < SuchAs > Expression() < CloseParen > ExpArithBis()
 }
+
+void ExpArithBis() : {} {
+	< Plus > Expression_arithmetique()  ExpArithBis() 
+| 	< Minus > Expression_arithmetique()  ExpArithBis() 
+| 	< Product > Expression_arithmetique()  ExpArithBis() 
+| 	< Division > Expression_arithmetique() ExpArithBis() 
+| 	< Modulo > Expression_arithmetique()  ExpArithBis() 
+| 	< Power > Expression_arithmetique()  ExpArithBis()
+|   {}
+}
+
+void Expression_de_couples() #Expression_de_couples : {} {
+	Couple()
+}
+
+void Expression_d_ensembles() #Expression_d_ensembles : {} {
+	Ensemble_vide()
+|   Ensemble_entier()
+|   Ensemble_booleen()
+|   Ensemble_chaines()
+}
+
+void Construction_d_ensemble() #Construction_d_ensembles : {} {
+	Expression() < Product > Expression() 
+|   Ens_comprehension()
+|   Sous_ensembles()
+|   Sous_ensembles_finis()
+|   Ens_extension()
+|   Intervalle()
+|   Difference()
+|  	Union()
+|   Intersection()
+|   Union_generalisee()
+|   Intersection_generalisee()
+|   Union_quantifiee()
+|   Intersection_quantifee()
+}
+
+void Expression_de_records() #Expression_de_records : {} {
+	Ensemble_records()
+|	Record_en_extension()
+|	Champ_de_record()
+}
+
+void Expression_de_relations() #Expression_de_relations : {} {
+	Ensemble_relations()
+|	Identite()
+|	Inverse()
+|	Première_projection()
+|	Deuxième_projection()
+|	Composition()
+|	Produit_directe()
+|	Produit_parallèle()
+|	Iteration()
+|	Fermeture_reflexive()
+|	Fermeture()
+|	Domaine()
+|	Codomaine()
+|	Image()
+|	Restriction_domaine()
+|	Soustraction_domaine()
+|	Restriction_codomaine()
+|	Soustraction_codomaine()
+|	Surcharge()
+}
+
+void Expression_de_fonctions() #Expression_de_fonctions : {} {
+	Fonction_partielle()
+|	Fonction_totale()
+|	Injection_partielle()
+|	Injection_totale()
+|	Surjection_partielle()
+|	Surjection_totale()
+|	Bijection_totale()
+}
+
+void Construction_de_fonctions() #Construction_de_fonctions : {} {
+	Lambda_expression()
+|	evaluation_fonction()
+|	Transformee_fonction()
+|	Transformee_relation()
+}
+
+void Expression_de_suites() #Expression_de_suites : {} {
+	Suites()
+|	Suites_non_vide()
+|	Suites_injectives()
+|	Suites_inj_non_vide()
+|	Permutations()
+|	Suite_vide()
+|	Suite_extension()
+}
+
+void Construction_de_suites() #Construction_de_suites : {} {
+	Taille_suite()
+|	Premier_element_suite()
+|	Dernier_element_suite()
+|	Tete_suite()
+|	Queue_suite()
+|	Inverse_suite()
+|	Concatenation()
+|	Insertion_tete()
+|	Insertion_queue()
+|	Restriction_tete()
+|	Restriction_queue()
+|	Concat_generalisee()
+}
+
+void Expr_parenthesee() #Expr_parenthesee : {} {
+	< OpenParen > Expression() < CloseParen >
+}
+
+void Conversion_bool() #Conversion_bool : {} {
+	< Bool > < OpenParen > Predicat() < CloseParen >
+}
+
+void Couple() #Couple : {} {
+	Expression() < Maplet > Expression()
+| 	Expression() < Comma > Expression()
+}
+
+void Ensemble_vide() #Ensemble_vide : {} {
+	< EmptySet > 
+}
+
+void Ensemble_entier() #Ensemble_entier : {} {
+	< Nat >
+| 	< Nat1 >
+| 	< Natural >
+| 	< Natural1 >
+| 	< Int >
+| 	< Integer >  
+}
+
+void Ensemble_chaine() #Ensemble_chaine : {} {
+	< String >
+}
+
