@@ -42,12 +42,12 @@ SKIP : {
 TOKEN : {
 
   	<Machine: "MACHINE">
-|  <End : "END">
-|  <Sets : "SETS">
-|  <Invariant : "INVARIANT">
-|  <Assert : "ASSERT">
-|  <Variables : "VARIABLES">
-|  <Operations : "OPERATIONS">
+|  	<End : "END">
+|  	<Sets : "SETS">
+|  	<Invariant : "INVARIANT">
+|  	<Assert : "ASSERT">
+|  	<Variables : "VARIABLES">
+|  	<Operations : "OPERATIONS">
 | 	<Events : "EVENTS">
 |	<Constraints : "CONSTRAINTS">
 |	<Constants : "CONSTANTS">
@@ -144,9 +144,9 @@ TOKEN : {
 |	<Tilde : "~">
 |	<OpenBraces : "{">
 |	<CloseBraces : "}">
-|  <Point : ".">
-|  <OpenParen : "(">
-|  <CloseParen : ")">
+|  	<Point : ".">
+|  	<OpenParen : "(">
+|  	<CloseParen : ")">
 |	<Comma : ",">
 |	<Or : "or">
 |	<And  : "&">
@@ -288,7 +288,7 @@ void Composant() : {} {
 }
 
 void Machine_abstraite () #Machine : {} {
-	<Machine> EnTete() (ClauseMachineAbstraite())* <End>
+	<Machine> EnTete() (Clause_machine_abstraite())* <End>
 }
 
 void Clause_machine_abstraite() : {} {
@@ -344,7 +344,7 @@ void Clause_values() #Values : {} {
 }
 
 void Valuation() #Value : {} {
-	< IDENTIFIER > <Equal> (Terme() | ExprTableau())
+	< IDENTIFIER > <Equal> (Terme() | Expr_tableau())
 }
 
 void Clause_concrete_variables() #ConcreteVariables : {} {
@@ -372,7 +372,7 @@ void Operation() #Operation : {} {
 }
 
 void Entete_operation() #EnteteOperation : {} {
-	[<IDENTIFIER> (<Semicolon> <IDENTIFIER>)* <OperationReturn> ] Ident_ren()
+	[<IDENTIFIER> (<SemiColon> <IDENTIFIER>)* <OperationReturn> ] Ident_ren()
 	 [<OpenParen> <IDENTIFIER>(<Comma> <IDENTIFIER>)* <CloseParen>]
 }
 
@@ -405,7 +405,7 @@ void Terme_record() #Terme_record : {} {
 }
 
 void Expr_tableau() #Expr_tableau : {} {
-	< IDENTIFIER >
+	< IDENTIFIER > 
 | 	< OpenBraces > Terme_simple() (< Maplet > Terme_simple())* < Maplet > Terme() ( < Comma > Terme_simple() (< Maplet > Terme_simple())* < Maplet > Terme())* < CloseBraces >
 | 	Ensemble_simple() (< Product > Ensemble_simple()) < Product > <OpenBraces > Terme() < CloseBraces >
 }
@@ -425,7 +425,7 @@ void Condition() #Condition : { } {
 
 void Instruction() #Instruction: {} {
 	Instruction_bloc()
-| 	Instruction_variable_local()
+| 	Instruction_variable_locale()
 | 	Substitution_identite()
 | 	Instruction_devient_egal()
 | 	Instruction_appel_operation()
@@ -438,7 +438,7 @@ void Instruction() #Instruction: {} {
 
 void Instruction_corps_operation() #Instruction_corps_operation: {} {
 	Instruction_bloc()
-| 	Instruction_variable_local()
+| 	Instruction_variable_locale()
 | 	Substitution_identite()
 | 	Instruction_devient_egal()
 | 	Instruction_appel_operation()
@@ -452,7 +452,7 @@ void Instruction_bloc() #Instruction_bloc : {} {
 	< Begin > Instruction() < End > 
 }
 
-void Instruction_variable_local() #Instruciton_variable_local : { } {
+void Instruction_variable_locale() #Instruciton_variable_locale : { } {
 	< Var > < IDENTIFIER > (< Comma > < IDENTIFIER > )* < In > Instruction() < End > 
 }
 
@@ -526,7 +526,7 @@ void  Predicat_Negation() #Predicat_Negation : {}{
 }
 
 void  Predicat_Disjonction() #Predicat_Disjonction : {}{
- Predicat() < OR > Predicat() 
+ Predicat() < Union > Predicat() 
 }
 
 void  Predicat_Implication() #Predicat_Implication : {}{
@@ -606,12 +606,12 @@ void Expression() #Expression : { } {
 |    Construction_de_fonctions()
 |    Expression_de_suites()
 |    Construction_de_suites()
-|    Expression_d_arbres()
+//|    Expression_d_arbres() 
 }
 
 void Expression_primaire () #Expression_primaire : { } {
 	Donnee()
-| 	Expression_paranthese()
+| 	Expr_parenthesee()
 | 	< String > 
 }
 
@@ -660,7 +660,7 @@ void Expression_d_ensembles() #Expression_d_ensembles : {} {
 |   Ensemble_chaines()
 }
 
-void Construction_d_ensemble() #Construction_d_ensembles : {} {
+void Construction_d_ensembles() #Construction_d_ensembles : {} {
 	Expression() < Product > Expression() 
 |   Ens_comprehension()
 |   Sous_ensembles()
@@ -689,7 +689,7 @@ void Expression_de_relations() #Expression_de_relations : {} {
 |	Premiere_projection()
 |	Deuxieme_projection()
 |	Composition()
-|	Produit_directe()
+|	Produit_direct()
 |	Produit_parallele()
 |	Iteration()
 |	Fermeture_reflexive()
@@ -754,6 +754,11 @@ void Conversion_bool() #Conversion_bool : {} {
 	< Bool > < OpenParen > Predicat() < CloseParen >
 }
 
+// TODO: Rajouter les autres opérations ?
+void Difference() #Difference : { } { 
+	Expression() < Minus > Expression()
+}
+
 void Couple() #Couple : {} {
 	Expression() < Maplet > Expression()
 | 	Expression() < Comma > Expression()
@@ -772,8 +777,12 @@ void Ensemble_entier() #Ensemble_entier : {} {
 | 	< Integer >  
 }
 
-void Ensemble_chaine() #Ensemble_chaine : {} {
+void Ensemble_chaines() #Ensemble_chaines : {} {
 	< String >
+}
+
+void Ensemble_booleen() #Ensemble_booleen : {} {
+	< Bool >
 }
 
 void Ens_comprehension() #Ens_comprehension : {} {
@@ -877,7 +886,7 @@ void Image() #Image : {} {
 void Restriction_domaine() #Restriction_domaine : {} {
 	Expression() < DomainRestriction > Expression()
 }
-void Soustractions_domaine() #Soustractions_domaine : {} {
+void Soustraction_domaine() #Soustraction_domaine : {} {
 	Expression() < DomainSubstraction > Expression()
 }
 void Restriction_codomaine() #Restriction_codomaine : {} {
@@ -952,7 +961,7 @@ void Premier_element_suite() #Premier_element_suite : {} {
 void Dernier_element_suite() #Dernier_element_suite : {} {
 	<Last>  < OpenParen >  Expression() < CloseParen >
 }
-void Tête_suite() #Tête_suite : {} {
+void Tete_suite() #Tete_suite : {} {
 	<Front> < OpenParen >  Expression() < CloseParen >
 }
 void Queue_suite() #Queue_suite : {} {
@@ -964,14 +973,14 @@ void Inverse_suite() #Inverse_suite : {} {
 void Concatenation() #Concatenation : {} {
 	Expression()  < Conc >  Expression()
 }
-void Insertion_tête() #Insertion_tête : {} {
+void Insertion_tete() #Insertion_tete : {} {
 	Expression() <  PrependSequence >  Expression()
 }
 
 void Insertion_queue() #Insertion_queue : {} {
 	Expression() < AppendSequence >  Expression()
 }
-void Restriction_tête() #Restriction_tête : {} {
+void Restriction_tete() #Restriction_tete : {} {
 	Expression() < PrefixSequence > Expression()
 }
 void Restriction_queue() #Restriction_queue : {} {
@@ -1036,5 +1045,168 @@ void Aplatissement_infixe() #Aplatissement_infixe : {} {
 	< Infix > < OpenParen >  Expression() < CloseParen >
 }
 
+void Substitution() #Substitution : {} {
+	Substitution_bloc()
+|	Substitution_identite()
+|	Substitution_devient_egal()
+|	Substitution_precondition()
+|	Substitution_assertion()
+|	Substitution_choix_borne()
+|	Substitution_conditionnelle()
+|	Substitution_selection()
+|	Substitution_cas()
+|	Substitution_choix_non_borne()
+|	Substitution_definition_locale()
+|	Substitution_devient_elt_de()
+|	Substitution_devient_tel_que()
+|	Substitution_variable_locale()
+|	Substitution_sequence()
+|	Substitution_appel_operation()
+|	Substitution_simultanee()
+|	Substitution_tant_que()
+}
 
+void Substitution_corps_operation() #Substitution_corps_operation : {} {
+	Substitution_bloc()
+|	Substitution_identite()
+|	Substitution_devient_egal()
+|	Substitution_precondition()
+|	Substitution_assertion()
+|	Substitution_choix_borne()
+|	Substitution_conditionnelle()
+|	Substitution_selection()
+|	Substitution_cas()
+|	Substitution_choix_non_borne()
+|	Substitution_definition_locale()
+|	Substitution_devient_elt_de()
+|	Substitution_devient_tel_que()
+|	Substitution_variable_locale()
+|	Substitution_appel_operation()
+}
+
+void Substitution_bloc() #Substitution_bloc : {} {
+	< Begin > Substitution() < End >
+}
+
+void Substitution_identite() #Substitution_identite : {} {
+	< Skip >
+}
+
+void Substitution_devient_egal() #Substitution_devient_egal : {} {
+	Ident_ren() (< Comma > Ident_ren())* < DevientEgal > Expression() (< Comma > Expression())*
+|	Ident_ren() < OpenParen > Expression() (< Comma > Expression())* < CloseParen > < DevientEgal > Expression()
+|	Ident_ren() < Quote > < IDENTIFIER > (< Quote > < IDENTIFIER >)* < DevientEgal > Expression()
+}
+
+void Substitution_precondition() #Substitution_precondition : {} {
+	< Pre > Predicat() < Then > Substitution() < End >
+}
+
+void Substitution_assertion() #Substitution_assertion : {} {
+	< Assert > Predicat() < Then > Substitution() < End >
+}
+
+void Substitution_choix_borne() #Substitution_choix_borne : {} {
+	< Choice > Substitution() ( < OrC > Substitution() )* < End >
+}
+
+void Substitution_conditionnelle() #Substitution_conditionnelle : {} {
+	< If > Predicat() < Then > Substitution()
+	( < Elsif > Predicat() < Then > Substitution() )*
+	[ < Else > Substitution() ]
+	< End >
+}
+
+void Substitution_selection() #Substitution_selection : {} {
+	< Select > Predicat() < Then > Substitution()
+	( < When > Predicat() < Then > Substitution() )*
+	[ < Else > Substitution()]
+	< End >
+}
+
+void Substitution_cas() #Substitution_cas : {} {
+	< Case > Expression() < Of >
+	< Either > Terme_simple() (< Comma > Terme_simple())* < Then > Substitution()
+	( < OrC > Terme_simple() (< Comma > Terme_simple())* < Then > Substitution() )*
+	[ < Else > Substitution() ]
+	< End >
+	< End >
+}
+
+void Substitution_choix_non_borne() #Substitution_choix_non_borne : {} {
+	< Any > < IDENTIFIER > (< Comma > < IDENTIFIER >)* < Where > Predicat() < Then > Substitution() < End >
+}
+
+void Substitution_definition_locale() #Substitution_definition_locale : {} {
+	< Let > < IDENTIFIER > (< Comma > < IDENTIFIER >)* < Be >
+	< IDENTIFIER > < Equal > Expression() ( < ConcatSequence > < IDENTIFIER > < Equal > Expression() )*
+	< InLetVar > Substitution() < End >
+}
+
+void Substitution_devient_elt_de() #Substitution_devient_elt_de : {} {
+	Ident_ren()(< Comma > < IDENTIFIER >)* < SetIn > Expression()
+}
+
+void Substitution_devient_tel_que() #Substitution_devient_tel_que : {} {
+	Ident_ren()(< Comma > Ident_ren())* < In > < OpenParen > Predicat() < CloseParen >
+}
+
+void Substitution_variable_locale() #Substitution_variable_locale : {} {
+	< Var > < IDENTIFIER >(< Comma > Ident_ren())* < InLetVar > Substitution() < End >
+}
+
+void Substitution_sequence() #Substitution_sequence : {} {
+	Substitution() < SemiColon > Substitution()
+}
+
+void Substitution_appel_operation() #Substitution_appel_operation : {} {
+	[ Ident_ren()(< Comma > Ident_ren())* < OperationReturn > ] Ident_ren() [ < OpenParen > Expression()(< Comma > Expression())* < CloseParen > ]
+}
+
+void Substitution_simultanee() #Substitution_simultanee : {} {
+	Substitution() < Parallel > Substitution()
+}
+
+void Substitution_corps_operation() #Substitution_corps_operation : {} {
+	Substitution_bloc()
+|	Substitution_identite()
+|	Substitution_devient_egal()
+|	Substitution_precondition()
+|	Substitution_assertion()
+|	Substitution_choix_borne()
+|	Substitution_conditionnelle()
+|	Substitution_selection()
+|	Substitution_choix_non_borne()
+|	Substitution_definition_locale()
+|	Substitution_devient_elt_de()
+|	Substitution_devient_tel_que()
+|	Substitution_variable_locale()
+|	Substitution_appel_operation()
+}
+
+void Instruction_corps_operation() #Instruction_corps_operation : {} {
+	Instruction_bloc()
+|	Instruction_variable_locale()
+|	Substitution_identite()
+|	Instruction_devient_egal()
+|	Instruction_appel_operation()
+|	Instruction_conditionnelle()
+|	Instruction_cas()
+|	Instruction_assertion()
+|	Substitution_tant_que()
+}
  
+
+void Liste_ident() #Liste_ident : {} {  
+	< IDENTIFIER >
+| 	< OpenParen > < IDENTIFIER >  (< Comma > < IDENTIFIER >)* < CloseParen >
+}
+
+void Ident_ren() #Ident_ren : {} {
+   < IDENTIFIER > (< Point > < IDENTIFIER > )*
+}
+
+void Ensemble_simple() #Ensemble_simple : { } { 
+	< Bool > 
+| 	< IDENTIFIER > 
+}
