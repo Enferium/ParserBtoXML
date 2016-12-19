@@ -42,12 +42,12 @@ SKIP : {
 TOKEN : {
 
   	<Machine: "MACHINE">
-|  	<End : "END">
-|  	<Sets : "SETS">
-|  	<Invariant : "INVARIANT">
-|  	<Assert : "ASSERT">
-|  	<Variables : "VARIABLES">
-|  	<Operations : "OPERATIONS">
+|  <End : "END">
+|  <Sets : "SETS">
+|  <Invariant : "INVARIANT">
+|  <Assert : "ASSERT">
+|  <Variables : "VARIABLES">
+|  <Operations : "OPERATIONS">
 | 	<Events : "EVENTS">
 |	<Constraints : "CONSTRAINTS">
 |	<Constants : "CONSTANTS">
@@ -144,9 +144,9 @@ TOKEN : {
 |	<Tilde : "~">
 |	<OpenBraces : "{">
 |	<CloseBraces : "}">
-|  	<Point : ".">
-|  	<OpenParen : "(">
-|  	<CloseParen : ")">
+|  <Point : ".">
+|  <OpenParen : "(">
+|  <CloseParen : ")">
 |	<Comma : ",">
 |	<Or : "or">
 |	<And  : "&">
@@ -165,7 +165,7 @@ TOKEN : {
 |	<In : ":">
 |	<DollarZero : "$0">
 
-| 	<Composition : "°">
+| 	<Composition : "Â°">
 |	<ParallelProduct : "//">
 |	<SetMinus : "\\">
 
@@ -211,6 +211,7 @@ TOKEN : {
 |	<Fnc : "fnc">
 |	<Rel : "rel">
 |	<Rec : "rec">
+|	<Struct : "struct">
 |	<Bool : "bool">
 
 |	<Nat : "NAT">
@@ -226,6 +227,24 @@ TOKEN : {
 |	<MaxInt : "MAXINT">
 |	<MinInt : "MININT">
 
+| 	<Tree : "tree" >
+| 	<Btree : "btree" >
+| 	<Const : "const" > 
+| 	<Top : "top" >
+| 	<Sons : "sons" >
+| 	< Prefix : "prefix"> 
+| 	< Postfix : "postfix"> 
+| 	< Sizet : "sizet" >
+| 	< Mirror : "mirror" >
+| 	< Rank : "rank" >
+| 	< Father : "father" >
+| 	< Son : "son" >
+| 	< Subtree : "subtree" >
+| 	< Arity : "arity" >
+| 	< Bin : "bin" >
+| 	< Left : "left" >
+| 	< Right : "right" >
+| 	< Infix : "infix" >
 }
 
 TOKEN : {
@@ -325,7 +344,7 @@ void Clause_values() #Values : {} {
 }
 
 void Valuation() #Value : {} {
-	Identifier() <Equal> (Terme() | ExprTableau())
+	< IDENTIFIER > <Equal> (Terme() | ExprTableau())
 }
 
 void Clause_concrete_variables() #ConcreteVariables : {} {
@@ -447,7 +466,7 @@ void Instruction_appel_operation() #Instruction_appel_operation : {} {
 	[Ident_ren() (< Comma > Ident_ren())* < OperationReturn >] Ident_ren() [< OpenParen > (Terme() | < String >) (< Comma > (Terme() | < String >))* < CloseParen > ]  
 }
 
-// TODO: Recursivité à gauche (indirect)
+// TODO: RecursivitÃ© Ã  gauche (indirect)
 void Instruction_sequence() #Instruction_sequence : {} {
 	Instruction() < SemiColon > Instruction() 
 }
@@ -519,11 +538,11 @@ void  Predicat_Equivalence() #Predicat_Equivalence : {}{
 }
 
 void  Predicat_Universel() #Predicat_Universel : {}{
- < Forall > Liste_Ident() < Point > < OpenParen > Predicat() < Implication > Predicat() < CloseParen >
+ < Forall > Liste_ident() < Point > < OpenParen > Predicat() < Implication > Predicat() < CloseParen >
 }
 
 void  Predicat_Existentiel() #Predicat_Existentiel : {}{
- < Exists >  Liste_Ident() < Point > < OpenParen > Predicat() < CloseParen >
+ < Exists >  Liste_ident() < Point > < OpenParen > Predicat() < CloseParen >
 }
 
 void  Predicat_Egalite() #Predicat_Egalite : {}{
@@ -667,11 +686,11 @@ void Expression_de_relations() #Expression_de_relations : {} {
 	Ensemble_relations()
 |	Identite()
 |	Inverse()
-|	Première_projection()
-|	Deuxième_projection()
+|	Premiere_projection()
+|	Deuxieme_projection()
 |	Composition()
 |	Produit_directe()
-|	Produit_parallèle()
+|	Produit_parallele()
 |	Iteration()
 |	Fermeture_reflexive()
 |	Fermeture()
@@ -757,3 +776,265 @@ void Ensemble_chaine() #Ensemble_chaine : {} {
 	< String >
 }
 
+void Ens_comprehension() #Ens_comprehension : {} {
+	<OpenBraces> < IDENTIFIER > (< Comma > < IDENTIFIER >)* < SuchAs > Predicat() <CloseBraces>
+}
+
+void Sous_ensembles() #Sous_ensembles : {} {
+	< POW > < OpenParen >  Expression() < CloseParen >
+|	< POW1 > < OpenParen >  Expression() < CloseParen >
+}
+
+void Sous_ensembles_finis() #Sous_ensembles_finis : {} {
+    < FIN > < OpenParen >  Expression() < CloseParen >
+|   < FIN1 > < OpenParen >  Expression() < CloseParen >
+}
+
+void Ens_extension() #Ens_extension : {} {
+	<OpenBraces> Expression() (< Comma > Expression())*  <CloseBraces>
+}
+
+void Intervalle() #Intervalle : {} {
+	Expression() < In > Expression()
+}
+
+void Union() #Union : {} {
+	Expression() < Union > Expression()
+}
+
+void Intersection() #Intersection : {} {
+	Expression() < Intersection > Expression()
+}
+
+void Union_generalisee() #Union_generalisee : {} {
+	< UnionGen > < OpenParen >  Expression() < CloseParen >
+}
+void Intersection_generalisee() #Intersection_generalisee : {} {
+	< InterGen > < OpenParen >  Expression() < CloseParen >
+}
+void Union_quantifiee() #Union_quantifiee : {} {
+	< UnionQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
+}
+void Intersection_quantifee() #Intersection_quantifiee : {} {
+	< InterQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
+}
+void Ensemble_records() #Ensemble_records : {} {
+	< Struct > < OpenParen >  < IDENTIFIER > < In > Expression() (< Comma > < IDENTIFIER > < In > Expression() )* < CloseParen >
+}
+void Record_en_extension() #Record_en_extension : {} {
+	< Rec > < OpenParen >  [< IDENTIFIER > < In >] Expression() (< Comma > [ < IDENTIFIER > < In > ] Expression())* < CloseParen >
+}
+void Champ_de_record() #Champ_de_record : {} {
+	Expression() < Quote > < IDENTIFIER >
+}
+void Ensemble_relations() #Ensemble_relations : {} {
+	Expression() < Relation > Expression()
+}
+
+void Identite() #Identite : {} {
+	< Id > < OpenParen >  Expression() < CloseParen >
+}
+
+void Inverse() #Inverse : {} {
+	Expression() < Tilde > 
+}
+
+void Premiere_projection() #Premiere_projection : {} {
+	< Prj1 > < OpenParen > Expression() < Comma > Expression() < CloseParen >
+}
+
+void Deuxieme_projection() #Deuxieme_projection : {} {
+	< Prj2 > < OpenParen > Expression() < Comma > Expression() < CloseParen >
+}
+void Composition() #Composition : {} {
+	Expression() < SemiColon > Expression()
+}
+void Produit_direct() #Produit_direct : {} {
+	Expression() < DirectProduct > Expression()
+}
+void Produit_parallele() #Produit_parallele : {} {
+	Expression() < Parallel > Expression()
+}
+void Iteration() #Iteration : {} {
+	Expression() Expression()
+}
+void Fermeture_reflexive() #Fermeture_reflexive : {} {
+	Expression() < Closure >
+}
+void Fermeture() #Fermeture : {} {
+	Expression() < Closure1 >
+}
+void Domaine() #Domaine : {} {
+	< Dom > < OpenParen >  Expression() < CloseParen >
+}
+void Codomaine() #Codomaine : {} {
+	< Ran > < OpenParen >  Expression() < CloseParen >
+}
+
+void Image() #Image : {} {
+	Expression() < OpenCurly > Expression() < CloseCurly >
+}
+void Restriction_domaine() #Restriction_domaine : {} {
+	Expression() < DomainRestriction > Expression()
+}
+void Soustractions_domaine() #Soustractions_domaine : {} {
+	Expression() < DomainSubstraction > Expression()
+}
+void Restriction_codomaine() #Restriction_codomaine : {} {
+	Expression() < RangeRestriction > Expression()
+}
+void Soustraction_codomaine() #Soustraction_codomaine : {} {
+	Expression() < RangeSubstraction > Expression()
+}
+void Surcharge() #Surcharge : {} {
+	Expression() < Override > Expression()
+}
+void Fonction_partielle() #Fonction_partielle : {} {
+	Expression() < PartialFunction > Expression()
+}
+void Fonction_totale() #Fonction_totale : {} {
+	Expression() < TotalFunction > Expression()
+}
+void Injection_partielle() #Injection_partielle : {} {
+	Expression() < PartialInjection > Expression()
+}
+void Injection_totale() #Injection_totale : {} {
+	Expression() < TotalInjection > Expression()
+}
+void Surjection_partielle() #Surjection_partielle : {} {
+	Expression() < PartialSurjection > Expression()
+}
+void Surjection_totale() #Surjection_totale : {} {
+	Expression() < TotalSurjection > Expression()
+}
+void Bijection_totale() #Bijection_totale : {} {
+	Expression() < TotalBijection > Expression()
+}
+void Lambda_expression() #Lambda_expression() : {} {
+	< Lambda > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
+}
+void evaluation_fonction() #evaluation_fonction : {} {
+	Expression() < OpenParen >  Expression() < CloseParen >
+}
+void Transformee_fonction() #Transformee_fonction : {} {
+	< Fnc > < OpenParen >  Expression() < CloseParen >
+}
+void Transformee_relation() #Transformee_relation : {} {
+	< Rel > < OpenParen >  Expression() < CloseParen >
+}
+void Suites() #Suites : {} {
+	< Seq > < OpenParen >  Expression() < CloseParen >
+}
+void Suites_non_vide() #Suites_non_vide : {} {
+	< Seq1 > < OpenParen >  Expression() < CloseParen >
+}
+void Suites_injectives() #Suites_injectives : {} {
+	< Iseq > < OpenParen >  Expression() < CloseParen >
+}
+void Suites_inj_non_vide() #Suites_inj_non_vide : {} {
+	< Iseq1 > < OpenParen >  Expression() < CloseParen >
+}
+void Permutations() #Permutations : {} {
+	< Perm > < OpenParen >  Expression() < CloseParen >
+}
+void Suite_vide() #Suite_vide : {} {
+	< EmptySequence >
+}
+void Suite_extension() #Suite_extension : {} {
+	< OpenCurly > Expression() (< Comma > Expression())*  < CloseCurly >
+}
+void Taille_suite() #Taille_suite : {} {
+ 	<Size> < OpenParen >  Expression() < CloseParen >
+}
+void Premier_element_suite() #Premier_element_suite : {} {
+	<First> < OpenParen >  Expression() < CloseParen >
+}
+void Dernier_element_suite() #Dernier_element_suite : {} {
+	<Last>  < OpenParen >  Expression() < CloseParen >
+}
+void TÃªte_suite() #TÃªte_suite : {} {
+	<Front> < OpenParen >  Expression() < CloseParen >
+}
+void Queue_suite() #Queue_suite : {} {
+	<Tail> < OpenParen >  Expression() < CloseParen >
+}
+void Inverse_suite() #Inverse_suite : {} {
+	< Rev > < OpenParen >  Expression() < CloseParen >
+}
+void Concatenation() #Concatenation : {} {
+	Expression()  < Conc >  Expression()
+}
+void Insertion_tÃªte() #Insertion_tÃªte : {} {
+	Expression() <  PrependSequence >  Expression()
+}
+
+void Insertion_queue() #Insertion_queue : {} {
+	Expression() < AppendSequence >  Expression()
+}
+void Restriction_tÃªte() #Restriction_tÃªte : {} {
+	Expression() < PrefixSequence > Expression()
+}
+void Restriction_queue() #Restriction_queue : {} {
+	Expression() < SuffixSequence > Expression()
+}
+void Concat_generalisee() #Concat_generalisee : {} {
+	< Conc > < OpenParen >  Expression() < CloseParen >
+}
+void Arbres() #Arbres : {} {
+	< Tree > < OpenParen >  Expression() < CloseParen >
+}
+void Arbres_binaires() #Arbres_binaires : {} {
+	< Btree >  < OpenParen >  Expression() < CloseParen >
+}
+void Construction_arbre() #Construction_arbre : {} {
+	< Const > < OpenParen >  Expression() < Comma > Expression() < CloseParen >
+}
+void Racine_arbre() #Racine_arbre : {} {
+	< Top > < OpenParen >  Expression() < CloseParen >
+}
+void Fils_arbre() #Fils_arbre : {} {
+	< Sons > < OpenParen >  Expression() < CloseParen >
+}
+void Aplatissement_prefixe() #Aplatissement_prefixe : {} {
+	< Prefix > < OpenParen >  Expression() < CloseParen >
+}
+void Aplatissement_postfixe() #Aplatissement_postfixe : {} {
+	< Postfix > < OpenParen >  Expression() < CloseParen >
+}
+void Taille_arbre() #Taille_arbre : {} {
+	< Sizet > < OpenParen >  Expression() < CloseParen >
+}
+void Symetrie_arbre() #Symetrie_arbre : {} {
+	< Mirror > < OpenParen >  Expression() < CloseParen >
+}
+void Rang_noeud() #Rang_noeud : {} {
+	< Rank > < OpenParen >  Expression() < Comma > Expression() < CloseParen >
+}
+void Pere_noeud() #Pere_noeud : {} {
+	< Father > < OpenParen >  Expression() < Comma > Expression() < CloseParen >
+}
+void Fils_noeud() #Fils_noeud : {} {
+	< Son > < OpenParen >  Expression() < Comma > Expression() < Comma > Expression() < CloseParen >
+}
+
+void Sous_arbre_noeud() #Sous_arbre_noeud : {} {
+	< Subtree > < OpenParen > Expression() < Comma > Expression() < CloseParen >
+}
+void Arite_noeud() #Arite_noeud : {} {
+	< Arity > < OpenParen >  Expression() < Comma > Expression() < CloseParen >
+}
+void Arbre_binaire_en_extension() #Arbre_binaire_en_extension : {} {
+	< Bin > < OpenParen >  Expression() [ < Comma > Expression() < Comma > Expression() ] < CloseParen >
+}
+void Sous_arbre_gauche() #Sous_arbre_gauche : {} {
+	< Left > < OpenParen >  Expression() < CloseParen >
+}
+void Sous_arbre_droit() #Sous_arbre_droit : {} {
+	< Right > < OpenParen >  Expression() < CloseParen >
+}
+void Aplatissement_infixe() #Aplatissement_infixe : {} {
+	< Infix > < OpenParen >  Expression() < CloseParen >
+}
+
+
+ 
