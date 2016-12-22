@@ -279,8 +279,8 @@ void Donnee() : { } {
 	Ident_ren()
 }
 
-void Ident_ren() : { } {
-	< IDENTIFIER > (< Point > < IDENTIFIER >)*
+void Ident_ren() #Ident_ren : {} {
+   < IDENTIFIER > (< Point > < IDENTIFIER > )*
 }
 
 void Composant() : {} {
@@ -1167,43 +1167,9 @@ void Substitution_simultanee() #Substitution_simultanee : {} {
 	Substitution() < Parallel > Substitution()
 }
 
-void Substitution_corps_operation() #Substitution_corps_operation : {} {
-	Substitution_bloc()
-|	Substitution_identite()
-|	Substitution_devient_egal()
-|	Substitution_precondition()
-|	Substitution_assertion()
-|	Substitution_choix_borne()
-|	Substitution_conditionnelle()
-|	Substitution_selection()
-|	Substitution_choix_non_borne()
-|	Substitution_definition_locale()
-|	Substitution_devient_elt_de()
-|	Substitution_devient_tel_que()
-|	Substitution_variable_locale()
-|	Substitution_appel_operation()
-}
-
-void Instruction_corps_operation() #Instruction_corps_operation : {} {
-	Instruction_bloc()
-|	Instruction_variable_locale()
-|	Substitution_identite()
-|	Instruction_devient_egal()
-|	Instruction_appel_operation()
-|	Instruction_conditionnelle()
-|	Instruction_cas()
-|	Instruction_assertion()
-|	Substitution_tant_que()
-}
- 
-
 void Liste_ident() #Liste_ident : {} {  
 	< IDENTIFIER >
 | 	< OpenParen > < IDENTIFIER >  (< Comma > < IDENTIFIER >)* < CloseParen >
-}
-
-void Ident_ren() #Ident_ren : {} {
-   < IDENTIFIER > (< Point > < IDENTIFIER > )*
 }
 
 void Ensemble_simple() #Ensemble_simple : { } { 
