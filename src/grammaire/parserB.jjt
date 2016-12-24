@@ -379,11 +379,11 @@ void Entete_operation() #EnteteOperation : {} {
 void Terme() #Terme : {} {
 	Terme_simple()
 | 	Expression_arithmetique()
-| 	Terme_record() ([<OpenParen> <Quote > <IDENTIFIER> <CloseParen>])*
+| 	Terme_record() (<OpenParen> <Quote > <IDENTIFIER> <CloseParen>)*
 } 
 
 void Terme_simple() #TermeSimple : {} {
-	Ident_ren() ([<OpenParen> <Quote > <IDENTIFIER> <CloseParen>])*
+	Ident_ren() (<OpenParen> <Quote > <IDENTIFIER> <CloseParen>)*
 | 	Entier_lit()
 | 	Boolean_lit()
 | 	<Boolean> <OpenParen> Condition() <CloseParen>
@@ -411,16 +411,15 @@ void Expr_tableau() #Expr_tableau : {} {
 }
 
 void Condition() #Condition : { } {
-	Terme_simple() < Equal > Terme_simple()
-| 	Terme_simple() < NotEqual >  Terme_simple()
-| 	Terme_simple() < LessThan >  Terme_simple()
-| 	Terme_simple() < GreatherThan >  Terme_simple()
-| 	Terme_simple() < LessThanOrEqual >  Terme_simple()
-| 	Terme_simple() < GreatherThanOrEqual >  Terme_simple()
-| 	Condition()  < And >  Condition()
-| 	Condition()  < Or >  Condition()
-| 	< Not > Condition()
-|  < OpenParen > Condition() < CloseParen >
+	Terme_simple() (< Equal > |  < NotEqual > |  < LessThan > |  < GreatherThan > |  < LessThanOrEqual > |< GreatherThanOrEqual >)	Terme_simple() CondBis()
+| 	< Not > Condition() CondBis()
+|   < OpenParen > Condition() < CloseParen > CondBis()
+}
+
+void CondBis() : { } {
+	< And > Condition() CondBis()
+| 	< Or > Condition() CondBis()
+|   {}
 }
 
 void Instruction() #Instruction: {} {
@@ -466,9 +465,21 @@ void Instruction_appel_operation() #Instruction_appel_operation : {} {
 	[Ident_ren() (< Comma > Ident_ren())* < OperationReturn >] Ident_ren() [< OpenParen > (Terme() | < String >) (< Comma > (Terme() | < String >))* < CloseParen > ]  
 }
 
-// TODO: Recursivité à gauche (indirect)
-void Instruction_sequence() #Instruction_sequence : {} {
-	Instruction() < SemiColon > Instruction() 
+void Instruction_sequence() #Instruction_sequence : {} { 
+	Instruction_bloc() < SemiColon > Instruction() InstrSeqBis() 
+| 	Instruction_variable_locale() < SemiColon > Instruction() InstrSeqBis() 
+| 	Substitution_identite() < SemiColon > Instruction() InstrSeqBis() 
+| 	Instruction_devient_egal() < SemiColon > Instruction() InstrSeqBis() 
+| 	Instruction_appel_operation() < SemiColon > Instruction() InstrSeqBis() 
+| 	Instruction_conditionnelle() < SemiColon > Instruction() InstrSeqBis() 
+| 	Instruction_cas() < SemiColon > Instruction() InstrSeqBis() 
+| 	Instruction_assertion() < SemiColon > Instruction() InstrSeqBis() 
+| 	Substitution_tant_que() < SemiColon > Instruction() InstrSeqBis() 
+}
+
+void InstrSeqBis()  : {} {
+	< SemiColon > Instruction() InstrSeqBis()
+|	{}
 }
 
 void Instruction_conditionnelle() #Instruction_conditionnelle : {} {
@@ -492,25 +503,25 @@ void Instruction_assertion() #Instruction_assertion : {} {
 
 void Predicat() #predicat : {} {
 	Predicat_Parenthese()
-| Predicat_Conjonction()
-| Predicat_Negation()
-| Predicat_Disjonction()
-| Predicat_Implication()
-| Predicat_Equivalence()
-| Predicat_Universel()
-| Predicat_Existentiel()
-| Predicat_Egalite()
-| Predicat_Inegalite()
-| Predicat_Appartenance()
-| Predicat_Non_Appartenance()
-| Predicat_Inclusion()
-| Predicat_Inclusion_Stricte()
-| Predicat_Non_Inclusion()
-| Predicat_Non_Inclusion_Stricte()
-| Predicat_Inferieur_Ou_Egal()
-| Predicat_Strictement_Inferieur()
-| Predicat_Superieur_Ou_Egal()
-| Predicat_Strictement_Superieur()
+| 	Predicat_Conjonction()
+| 	Predicat_Negation()
+| 	Predicat_Disjonction()
+|	Predicat_Implication()
+| 	Predicat_Equivalence()
+| 	Predicat_Universel()
+| 	Predicat_Existentiel()
+| 	Predicat_Egalite()
+| 	Predicat_Inegalite()
+| 	Predicat_Appartenance()
+| 	Predicat_Non_Appartenance()
+| 	Predicat_Inclusion()
+| 	Predicat_Inclusion_Stricte()
+| 	Predicat_Non_Inclusion()
+| 	Predicat_Non_Inclusion_Stricte()
+| 	Predicat_Inferieur_Ou_Egal()
+| 	Predicat_Strictement_Inferieur()
+| 	Predicat_Superieur_Ou_Egal()
+| 	Predicat_Strictement_Superieur()
 }
 
 void  Predicat_Parenthese() #Predicat_parenthese : {}{
