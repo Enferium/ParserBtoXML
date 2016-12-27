@@ -456,9 +456,11 @@ void Instruction_variable_locale() #Instruciton_variable_locale : { } {
 }
 
 void Instruction_devient_egal() #Instruction_devient_egal : {} {
-	Ident_ren() [< OpenParen > Terme() (< Comma > Terme())* < CloseParen >] < DevientEgal > Terme()
-| 	Ident_ren() < DevientEgal > Expr_tableau()
-|  	Ident_ren() < Quote > < IDENTIFIER > ( < Quote > < IDENTIFIER > )* < DevientEgal > Terme()  
+	Ident_ren()
+	(	   [< OpenParen > Terme() (< Comma > Terme())* < CloseParen >] < DevientEgal > Terme()
+		| < DevientEgal > Expr_tableau()
+		| < Quote > < IDENTIFIER > ( < Quote > < IDENTIFIER > )* < DevientEgal > Terme()
+	)
 }
 
 void Instruction_appel_operation() #Instruction_appel_operation : {} {
@@ -835,8 +837,10 @@ void Conversion_bool() #Conversion_bool : {} {
 }
 
 void Couple() #Couple : {} {
-	Expression() < Maplet > Expression()
-| 	Expression() < Comma > Expression()
+	Expression()
+	(	  < Maplet > Expression()
+	|  < Comma > Expression()
+	)
 }
 
 void Ensemble_vide() #Ensemble_vide : {} {
@@ -1168,9 +1172,11 @@ void Substitution_identite() #Substitution_identite : {} {
 }
 
 void Substitution_devient_egal() #Substitution_devient_egal : {} {
-	Ident_ren() (< Comma > Ident_ren())* < DevientEgal > Expression() (< Comma > Expression())*
-|	Ident_ren() < OpenParen > Expression() (< Comma > Expression())* < CloseParen > < DevientEgal > Expression()
-|	Ident_ren() < Quote > < IDENTIFIER > (< Quote > < IDENTIFIER >)* < DevientEgal > Expression()
+	Ident_ren()
+	(	  (< Comma > Ident_ren())* < DevientEgal > Expression() (< Comma > Expression())*
+		|	< OpenParen > Expression() (< Comma > Expression())* < CloseParen > < DevientEgal > Expression()
+		|	< Quote > < IDENTIFIER > (< Quote > < IDENTIFIER >)* < DevientEgal > Expression()
+	)
 }
 
 void Substitution_precondition() #Substitution_precondition : {} {
