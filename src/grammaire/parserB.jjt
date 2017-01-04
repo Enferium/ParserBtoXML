@@ -682,12 +682,9 @@ void Expression() #Expression : { } {
 |    Expression_de_couples()
 |    Expression_d_ensembles()
 |    Construction_d_ensembles()
-|    Expression_de_records()
 |    Expression_de_relations()
 |    Expression_de_fonctions()
 |    Construction_de_fonctions()
-|    Expression_de_suites()
-|    Construction_de_suites()
 }
 
 void Expression_primaire () #Expression_primaire : { } {
@@ -742,25 +739,36 @@ void Expression_d_ensembles() #Expression_d_ensembles : {} {
 }
 
 void Construction_d_ensembles() #Construction_d_ensembles : {} {
-	Expression() < Product > Expression() 
-|   Ens_comprehension()
-|   Sous_ensembles()
-|   Sous_ensembles_finis()
-|   Ens_extension()
-|   Intervalle()
-|   Expression() < Minus > Expression()
-|  	Union()
-|   Intersection()
-|   Union_generalisee()
-|   Intersection_generalisee()
-|   Union_quantifiee()
-|   Intersection_quantifee()
+	Expression_primaire() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_booleenne() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_arithmetique() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_primaire() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_booleenne() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_arithmetique() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_d_ensembles() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_de_relations() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_de_fonctions() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Construction_de_fonctions() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_d_ensembles() (< Product > Expression() | < Minus > Expression()) (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_de_relations() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Expression_de_fonctions() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Construction_de_fonctions() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis()
+|   Ens_comprehension() ConstrEnsembleBis()
+|   Sous_ensembles() ConstrEnsembleBis()
+|   Sous_ensembles_finis() ConstrEnsembleBis()
+|   Ens_extension() ConstrEnsembleBis()
+|   Intervalle() ConstrEnsembleBis()
+|  	Union() ConstrEnsembleBis()
+|   Intersection() ConstrEnsembleBis()
+|   Union_generalisee() ConstrEnsembleBis()
+|   Intersection_generalisee() ConstrEnsembleBis()
+|   Union_quantifiee() ConstrEnsembleBis()
+|   Intersection_quantifee() ConstrEnsembleBis()
 }
 
-void Expression_de_records() #Expression_de_records : {} {
-	Ensemble_records()
-|	Record_en_extension()
-|	Champ_de_record()
+void ConstrEnsembleBis() : { } {
+	 [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] (< Product > Expression() | < Minus > Expression())
+| { }
 }
 
 void Expression_de_relations() #Expression_de_relations : {} {
@@ -786,13 +794,7 @@ void Expression_de_relations() #Expression_de_relations : {} {
 }
 
 void Expression_de_fonctions() #Expression_de_fonctions : {} {
-	Fonction_partielle()
-|	Fonction_totale()
-|	Injection_partielle()
-|	Injection_totale()
-|	Surjection_partielle()
-|	Surjection_totale()
-|	Bijection_totale()
+  	( < PartialFunction > Expression() | < TotalFunction > Expression() | < PartialInjection > Expression() | < TotalInjection > Expression() | < PartialSurjection > Expression() | < TotalSurjection > Expression() | < TotalBijection > Expression())
 }
 
 void Construction_de_fonctions() #Construction_de_fonctions : {} {
@@ -800,31 +802,6 @@ void Construction_de_fonctions() #Construction_de_fonctions : {} {
 |	evaluation_fonction()
 |	Transformee_fonction()
 |	Transformee_relation()
-}
-
-void Expression_de_suites() #Expression_de_suites : {} {
-	Suites()
-|	Suites_non_vide()
-|	Suites_injectives()
-|	Suites_inj_non_vide()
-|	Permutations()
-|	Suite_vide()
-|	Suite_extension()
-}
-
-void Construction_de_suites() #Construction_de_suites : {} {
-	Taille_suite()
-|	Premier_element_suite()
-|	Dernier_element_suite()
-|	Tete_suite()
-|	Queue_suite()
-|	Inverse_suite()
-|	Concatenation()
-|	Insertion_tete()
-|	Insertion_queue()
-|	Restriction_tete()
-|	Restriction_queue()
-|	Concat_generalisee()
 }
 
 void Expr_parenthesee() #Expr_parenthesee : {} {
@@ -836,10 +813,19 @@ void Conversion_bool() #Conversion_bool : {} {
 }
 
 void Couple() #Couple : {} {
-	Expression()
-	(	  < Maplet > Expression()
-	|  < Comma > Expression()
-	)
+	 Expression_primaire() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis()
+|    Expression_booleenne() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis()
+|    Expression_arithmetique() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis()
+|    Expression_d_ensembles() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis()
+|    Construction_d_ensembles() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis()
+|    Expression_de_relations() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis()
+|    Expression_de_fonctions() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis()
+|    Construction_de_fonctions() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis()
+}
+
+void CoupleBis() : { } {
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()
+| 	{ }
 }
 
 void Ensemble_vide() #Ensemble_vide : {} {
@@ -905,18 +891,142 @@ void Union_quantifiee() #Union_quantifiee : {} {
 void Intersection_quantifee() #Intersection_quantifiee : {} {
 	< InterQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
 }
-void Ensemble_records() #Ensemble_records : {} {
-	< Struct > < OpenParen >  < IDENTIFIER > < In > Expression() (< Comma > < IDENTIFIER > < In > Expression() )* < CloseParen >
-}
-void Record_en_extension() #Record_en_extension : {} {
-	< Rec > < OpenParen >  [< IDENTIFIER > < In >] Expression() (< Comma > [ < IDENTIFIER > < In > ] Expression())* < CloseParen >
-}
-void Champ_de_record() #Champ_de_record : {} {
-	Expression() < Quote > < IDENTIFIER >
-}
+
 void Ensemble_relations() #Ensemble_relations : {} {
-	Expression() < Relation > Expression()
-}
+	Expression_primaire() < Relation > Expression()
+|   Expression_booleenne() < Relation > Expression()
+|   Expression_arithmetique() < Relation > Expression()
+| 	Expression_primaire() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   Expression_booleenne() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   Expression_arithmetique() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   Expression_d_ensembles() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+| 	Expression_primaire() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Expression_booleenne() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Expression_arithmetique() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Expression_primaire() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Expression_booleenne() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Expression_arithmetique() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Expression_d_ensembles() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Expression_de_fonctions() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Construction_de_fonctions() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Expression_d_ensembles() (< Product > Expression() | < Minus > Expression()) (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Expression_de_fonctions() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Construction_de_fonctions() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Ens_comprehension() ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Sous_ensembles() ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression() 
+|   Sous_ensembles_finis() ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Ens_extension() ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression() 
+|   Intervalle() ConstrEnsembleBis()[(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression() 
+|  	Union() ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Intersection() ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Union_generalisee() ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Intersection_generalisee() ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Union_quantifiee() ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression() 
+|   Intersection_quantifee() ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   Expression_de_fonctions() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis()< Relation > Expression()
+|   Construction_de_fonctions() (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   Expression_d_ensembles() < Relation > Expression()
+
+
+|   Expression_de_fonctions() < Relation > Expression()
+|   Construction_de_fonctions() < Relation > Expression()
+
+| 	Ensemble_relations() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression()) 
+|	Identite() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Inverse() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Premiere_projection() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Deuxieme_projection() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Composition() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Produit_direct() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Produit_parallele() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Iteration() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Fermeture_reflexive() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Fermeture() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Domaine() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Codomaine() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Image() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Restriction_domaine() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Soustraction_domaine() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Restriction_codomaine() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Soustraction_codomaine() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+|	Surcharge() Expression_de_relations() (
+	(< Maplet > Expression() |  < Comma > Expression()) CoupleBis() (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Product > Expression() | < Minus > Expression()) ConstrEnsembleBis() [(< Maplet > Expression() |  < Comma > Expression()) CoupleBis()] < Relation > Expression()
+|   (< Maplet > Expression() |  < Comma > Expression()) CoupleBis() < Relation > Expression()
+|   < Relation > Expression())
+} 
 
 void Identite() #Identite : {} {
 	< Id > < OpenParen >  Expression() < CloseParen >
@@ -976,27 +1086,7 @@ void Soustraction_codomaine() #Soustraction_codomaine : {} {
 void Surcharge() #Surcharge : {} {
 	Expression() < Override > Expression()
 }
-void Fonction_partielle() #Fonction_partielle : {} {
-	Expression() < PartialFunction > Expression()
-}
-void Fonction_totale() #Fonction_totale : {} {
-	Expression() < TotalFunction > Expression()
-}
-void Injection_partielle() #Injection_partielle : {} {
-	Expression() < PartialInjection > Expression()
-}
-void Injection_totale() #Injection_totale : {} {
-	Expression() < TotalInjection > Expression()
-}
-void Surjection_partielle() #Surjection_partielle : {} {
-	Expression() < PartialSurjection > Expression()
-}
-void Surjection_totale() #Surjection_totale : {} {
-	Expression() < TotalSurjection > Expression()
-}
-void Bijection_totale() #Bijection_totale : {} {
-	Expression() < TotalBijection > Expression()
-}
+
 void Lambda_expression() #Lambda_expression() : {} {
 	< Lambda > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
 }
@@ -1009,63 +1099,9 @@ void Transformee_fonction() #Transformee_fonction : {} {
 void Transformee_relation() #Transformee_relation : {} {
 	< Rel > < OpenParen >  Expression() < CloseParen >
 }
-void Suites() #Suites : {} {
-	< Seq > < OpenParen >  Expression() < CloseParen >
-}
-void Suites_non_vide() #Suites_non_vide : {} {
-	< Seq1 > < OpenParen >  Expression() < CloseParen >
-}
-void Suites_injectives() #Suites_injectives : {} {
-	< Iseq > < OpenParen >  Expression() < CloseParen >
-}
-void Suites_inj_non_vide() #Suites_inj_non_vide : {} {
-	< Iseq1 > < OpenParen >  Expression() < CloseParen >
-}
+
 void Permutations() #Permutations : {} {
 	< Perm > < OpenParen >  Expression() < CloseParen >
-}
-void Suite_vide() #Suite_vide : {} {
-	< EmptySequence >
-}
-void Suite_extension() #Suite_extension : {} {
-	< OpenCurly > Expression() (< Comma > Expression())*  < CloseCurly >
-}
-void Taille_suite() #Taille_suite : {} {
- 	<Size> < OpenParen >  Expression() < CloseParen >
-}
-void Premier_element_suite() #Premier_element_suite : {} {
-	<First> < OpenParen >  Expression() < CloseParen >
-}
-void Dernier_element_suite() #Dernier_element_suite : {} {
-	<Last>  < OpenParen >  Expression() < CloseParen >
-}
-void Tete_suite() #Tete_suite : {} {
-	<Front> < OpenParen >  Expression() < CloseParen >
-}
-void Queue_suite() #Queue_suite : {} {
-	<Tail> < OpenParen >  Expression() < CloseParen >
-}
-void Inverse_suite() #Inverse_suite : {} {
-	< Rev > < OpenParen >  Expression() < CloseParen >
-}
-void Concatenation() #Concatenation : {} {
-	Expression()  < Conc >  Expression()
-}
-void Insertion_tete() #Insertion_tete : {} {
-	Expression() <  PrependSequence >  Expression()
-}
-
-void Insertion_queue() #Insertion_queue : {} {
-	Expression() < AppendSequence >  Expression()
-}
-void Restriction_tete() #Restriction_tete : {} {
-	Expression() < PrefixSequence > Expression()
-}
-void Restriction_queue() #Restriction_queue : {} {
-	Expression() < SuffixSequence > Expression()
-}
-void Concat_generalisee() #Concat_generalisee : {} {
-	< Conc > < OpenParen >  Expression() < CloseParen >
 }
 
 void Substitution() #Substitution : {} {
