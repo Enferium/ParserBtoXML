@@ -688,7 +688,6 @@ void Expression() #Expression : { } {
 |    Construction_de_fonctions()
 |    Expression_de_suites()
 |    Construction_de_suites()
-//|    Expression_d_arbres() 
 }
 
 void Expression_primaire () #Expression_primaire : { } {
@@ -1067,61 +1066,6 @@ void Restriction_queue() #Restriction_queue : {} {
 }
 void Concat_generalisee() #Concat_generalisee : {} {
 	< Conc > < OpenParen >  Expression() < CloseParen >
-}
-void Arbres() #Arbres : {} {
-	< Tree > < OpenParen >  Expression() < CloseParen >
-}
-void Arbres_binaires() #Arbres_binaires : {} {
-	< Btree >  < OpenParen >  Expression() < CloseParen >
-}
-void Construction_arbre() #Construction_arbre : {} {
-	< Const > < OpenParen >  Expression() < Comma > Expression() < CloseParen >
-}
-void Racine_arbre() #Racine_arbre : {} {
-	< Top > < OpenParen >  Expression() < CloseParen >
-}
-void Fils_arbre() #Fils_arbre : {} {
-	< Sons > < OpenParen >  Expression() < CloseParen >
-}
-void Aplatissement_prefixe() #Aplatissement_prefixe : {} {
-	< Prefix > < OpenParen >  Expression() < CloseParen >
-}
-void Aplatissement_postfixe() #Aplatissement_postfixe : {} {
-	< Postfix > < OpenParen >  Expression() < CloseParen >
-}
-void Taille_arbre() #Taille_arbre : {} {
-	< Sizet > < OpenParen >  Expression() < CloseParen >
-}
-void Symetrie_arbre() #Symetrie_arbre : {} {
-	< Mirror > < OpenParen >  Expression() < CloseParen >
-}
-void Rang_noeud() #Rang_noeud : {} {
-	< Rank > < OpenParen >  Expression() < Comma > Expression() < CloseParen >
-}
-void Pere_noeud() #Pere_noeud : {} {
-	< Father > < OpenParen >  Expression() < Comma > Expression() < CloseParen >
-}
-void Fils_noeud() #Fils_noeud : {} {
-	< Son > < OpenParen >  Expression() < Comma > Expression() < Comma > Expression() < CloseParen >
-}
-
-void Sous_arbre_noeud() #Sous_arbre_noeud : {} {
-	< Subtree > < OpenParen > Expression() < Comma > Expression() < CloseParen >
-}
-void Arite_noeud() #Arite_noeud : {} {
-	< Arity > < OpenParen >  Expression() < Comma > Expression() < CloseParen >
-}
-void Arbre_binaire_en_extension() #Arbre_binaire_en_extension : {} {
-	< Bin > < OpenParen >  Expression() [ < Comma > Expression() < Comma > Expression() ] < CloseParen >
-}
-void Sous_arbre_gauche() #Sous_arbre_gauche : {} {
-	< Left > < OpenParen >  Expression() < CloseParen >
-}
-void Sous_arbre_droit() #Sous_arbre_droit : {} {
-	< Right > < OpenParen >  Expression() < CloseParen >
-}
-void Aplatissement_infixe() #Aplatissement_infixe : {} {
-	< Infix > < OpenParen >  Expression() < CloseParen >
 }
 
 void Substitution() #Substitution : {} {
