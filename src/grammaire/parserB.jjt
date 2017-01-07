@@ -794,7 +794,7 @@ void Expression_de_relations() #Expression_de_relations : {} {
 }
 
 void Expression_de_fonctions() #Expression_de_fonctions : {} {
-  	( < PartialFunction > Expression() | < TotalFunction > Expression() | < PartialInjection > Expression() | < TotalInjection > Expression() | < PartialSurjection > Expression() | < TotalSurjection > Expression() | < TotalBijection > Expression())
+  	Expression() ( < PartialFunction > Expression() | < TotalFunction > Expression() | < PartialInjection > Expression() | < TotalInjection > Expression() | < PartialSurjection > Expression() | < TotalSurjection > Expression() | < TotalBijection > Expression())
 }
 
 void Construction_de_fonctions() #Construction_de_fonctions : {} {
