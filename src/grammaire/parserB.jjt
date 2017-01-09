@@ -757,25 +757,12 @@ void Construction_d_ensembles() #Construction_d_ensembles : {} {
 
 
 void Expression_de_relations() #Expression_de_relations : {} {
-	Ensemble_relations()
-|	Identite()
-|	Inverse()
-|	Premiere_projection()
-|	Deuxieme_projection()
-|	Composition()
-|	Produit_direct()
-|	Produit_parallele()
-|	Iteration()
-|	Fermeture_reflexive()
-|	Fermeture()
-|	Domaine()
-|	Codomaine()
-|	Image()
-|	Restriction_domaine()
-|	Soustraction_domaine()
-|	Restriction_codomaine()
-|	Soustraction_codomaine()
-|	Surcharge()
+	< Id > < OpenParen >  Expression() < CloseParen >
+	< Prj1 > < OpenParen > Expression() < Comma > Expression() < CloseParen >
+	< Prj2 > < OpenParen > Expression() < Comma > Expression() < CloseParen >
+	< Dom > < OpenParen >  Expression() < CloseParen >
+	< Ran > < OpenParen >  Expression() < CloseParen >
+	Expression() (( < Relation > | < SemiColon > | < DirectProduct > | < Parallel > | < Power > | < DomainRestriction > | < DomainSubstraction > | < RangeRestriction > | < RangeSubstraction > | < Override >) |( < OpenCurly > Expression() < CloseCurly > | < Closure > | < Closure1 > | < Tilde > ))
 }
 
 void Expression_de_fonctions() #Expression_de_fonctions : {} {
@@ -875,68 +862,6 @@ void Intersection_quantifee() #Intersection_quantifiee : {} {
 	< InterQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
 }
 
-void Ensemble_relations() #Ensemble_relations : {} {
-	Expression() < Relation > Expression()
-}
-
-void Identite() #Identite : {} {
-	< Id > < OpenParen >  Expression() < CloseParen >
-}
-
-void Inverse() #Inverse : {} {
-	Expression() < Tilde > 
-}
-
-void Premiere_projection() #Premiere_projection : {} {
-	< Prj1 > < OpenParen > Expression() < Comma > Expression() < CloseParen >
-}
-
-void Deuxieme_projection() #Deuxieme_projection : {} {
-	< Prj2 > < OpenParen > Expression() < Comma > Expression() < CloseParen >
-}
-void Composition() #Composition : {} {
-	Expression() < SemiColon > Expression()
-}
-void Produit_direct() #Produit_direct : {} {
-	Expression() < DirectProduct > Expression()
-}
-void Produit_parallele() #Produit_parallele : {} {
-	Expression() < Parallel > Expression()
-}
-void Iteration() #Iteration : {} {
-	Expression() Expression()
-}
-void Fermeture_reflexive() #Fermeture_reflexive : {} {
-	Expression() < Closure >
-}
-void Fermeture() #Fermeture : {} {
-	Expression() < Closure1 >
-}
-void Domaine() #Domaine : {} {
-	< Dom > < OpenParen >  Expression() < CloseParen >
-}
-void Codomaine() #Codomaine : {} {
-	< Ran > < OpenParen >  Expression() < CloseParen >
-}
-
-void Image() #Image : {} {
-	Expression() < OpenCurly > Expression() < CloseCurly >
-}
-void Restriction_domaine() #Restriction_domaine : {} {
-	Expression() < DomainRestriction > Expression()
-}
-void Soustraction_domaine() #Soustraction_domaine : {} {
-	Expression() < DomainSubstraction > Expression()
-}
-void Restriction_codomaine() #Restriction_codomaine : {} {
-	Expression() < RangeRestriction > Expression()
-}
-void Soustraction_codomaine() #Soustraction_codomaine : {} {
-	Expression() < RangeSubstraction > Expression()
-}
-void Surcharge() #Surcharge : {} {
-	Expression() < Override > Expression()
-}
 void Fonction_partielle() #Fonction_partielle : {} {
 	Expression() < PartialFunction > Expression()
 }
