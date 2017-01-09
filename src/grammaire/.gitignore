@@ -199,3 +199,9 @@
 /ASTExpression_d_arbres.java
 /ASTblabla.java
 /ASTblabla2.java
+/ParseException.java
+/ParserBConstants.java
+/ParserBTokenManager.java
+/SimpleCharStream.java
+/Token.java
+/TokenMgrError.java

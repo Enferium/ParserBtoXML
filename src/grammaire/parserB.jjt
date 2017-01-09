@@ -738,31 +738,56 @@ void Expression_d_ensembles() #Expression_d_ensembles : {} {
 }
 
 void Construction_d_ensembles() #Construction_d_ensembles : {} {
-    <OpenBraces> ( < IDENTIFIER > (< Comma > < IDENTIFIER >)* < SuchAs > Predicat() | Expression() (< Comma > Expression())* )< CloseBraces > 
-|   Sous_ensembles()
-|   Sous_ensembles_finis()
-|	Expression() (< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() 
-| 	< UnionGen > < OpenParen >  Expression() < CloseParen >
-| 	< InterGen > < OpenParen >  Expression() < CloseParen >
-| 	< UnionQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
-| 	< InterQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
+    <OpenBraces> ( (< IDENTIFIER > (< Comma > < IDENTIFIER >)* < SuchAs > Predicat()) | (Expression() (< Comma > Expression())*) )< CloseBraces > ConstrEnsembleBis()
+|   Sous_ensembles() ConstrEnsembleBis()
+|   Sous_ensembles_finis()  ConstrEnsembleBis()
+| 	< UnionGen > < OpenParen >  Expression() < CloseParen > ConstrEnsembleBis()
+| 	< InterGen > < OpenParen >  Expression() < CloseParen > ConstrEnsembleBis()
+| 	< UnionQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen > ConstrEnsembleBis()
+| 	< InterQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen > ConstrEnsembleBis()
+| 	Expression_primaire() ExpressionBis() (< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis()
+|   Expression_booleenne() ExpressionBis() (< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis()
+|   Expression_arithmetique() ExpressionBis() (< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis()
+|   Expression_d_ensembles() ExpressionBis() (< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis()
+|   Expression_de_relations() ExpressionBis() (< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis()
+|   Construction_de_fonctions() ExpressionBis() (< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis()
 }
 
-
-void Expression_de_relations() #Expression_de_relations : {} {
-	< Id > < OpenParen >  Expression() < CloseParen >
-	< Prj1 > < OpenParen > Expression() < Comma > Expression() < CloseParen >
-	< Prj2 > < OpenParen > Expression() < Comma > Expression() < CloseParen >
-	< Dom > < OpenParen >  Expression() < CloseParen >
-	< Ran > < OpenParen >  Expression() < CloseParen >
-	Expression() (( < Relation > | < SemiColon > | < DirectProduct > | < Parallel > | < Power > | < DomainRestriction > | < DomainSubstraction > | < RangeRestriction > | < RangeSubstraction > | < Override >) |( < OpenCurly > Expression() < CloseCurly > | < Closure > | < Closure1 > | < Tilde > ))
+void ConstrEnsembleBis() : { } {
+	ExpressionBis() (< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis()
+| 	{ }
 }
 
 void Construction_de_fonctions() #Construction_de_fonctions : {} {
-	< Lambda > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
-| 	Expression() < OpenParen >  Expression() < CloseParen >
-| 	< Fnc > < OpenParen >  Expression() < CloseParen >
-| 	< Rel > < OpenParen >  Expression() < CloseParen >
+	< Lambda > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen > ConstrFonctionBis()
+|   <OpenBraces> ((< IDENTIFIER > (< Comma > < IDENTIFIER >)* < SuchAs > Predicat()) | (Expression() (< Comma > Expression())*) )< CloseBraces > ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
+| 	< UnionGen > < OpenParen >  Expression() < CloseParen > ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
+| 	< InterGen > < OpenParen >  Expression() < CloseParen > ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
+| 	< UnionQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen > ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
+| 	< InterQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen > ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
+| 	< Fnc > < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
+| 	< Rel > < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
+|   Sous_ensembles() ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
+|   Sous_ensembles_finis()  ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
+|	Expression_primaire() ExpressionBis() ((< OpenParen >  Expression() < CloseParen > ) | ((< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen >)) ConstrFonctionBis()
+|   Expression_booleenne() ExpressionBis() ((< OpenParen >  Expression() < CloseParen >) | ((< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen >)) ConstrFonctionBis()
+|   Expression_arithmetique() ExpressionBis() ((< OpenParen >  Expression() < CloseParen >) | ((< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen >)) ConstrFonctionBis()
+|   Expression_d_ensembles() ExpressionBis() ((< OpenParen >  Expression() < CloseParen >) | ((< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen >)) ConstrFonctionBis()
+|   Expression_de_relations() ExpressionBis() ((< OpenParen >  Expression() < CloseParen >) | ((< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen >)) ConstrFonctionBis()
+}
+
+void ConstrFonctionBis() : { } {
+	ExpressionBis() ((< OpenParen >  Expression() < CloseParen >) | ((< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen >)) ConstrFonctionBis()
+| 	{ }
+}
+
+void Expression_de_relations() #Expression_de_relations : {} {
+	< Id > < OpenParen >  Expression() < CloseParen >
+| 	< Prj1 > < OpenParen > Expression() < Comma > Expression() < CloseParen >
+| 	< Prj2 > < OpenParen > Expression() < Comma > Expression() < CloseParen >
+| 	< Dom > < OpenParen >  Expression() < CloseParen >
+| 	< Ran > < OpenParen >  Expression() < CloseParen >
+| 	Expression() (( < Relation > | < SemiColon > | < DirectProduct > | < Parallel > | < Power > | < DomainRestriction > | < DomainSubstraction > | < RangeRestriction > | < RangeSubstraction > | < Override >) |( < OpenCurly > Expression() < CloseCurly > | < Closure > | < Closure1 > | < Tilde > ))
 }
 
 void Expr_parenthesee() #Expr_parenthesee : {} {
