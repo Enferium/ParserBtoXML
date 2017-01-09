@@ -316,7 +316,7 @@ void Instanciation() : {} {
 		Terme()
 	|   Ensemble_entier() 
 	|  	<Boolean>
-	|  	Intervalle()
+	|  	Expression() < In > Expression() 
 }
 
 void Clause_sets () #Sets : {} {
@@ -675,18 +675,20 @@ void  Predicat_Superieur_Ou_Egal() #Predicat_Superieur_Ou_Egal : {}{
  Expression() < GreatherThanOrEqual >  Expression()
 }
 
-
 void Expression() #Expression : { } {
-	 Expression_primaire()
-|    Expression_booleenne()
-|    Expression_arithmetique()
-|    Expression_de_couples()
-|    Expression_d_ensembles()
-|    Construction_d_ensembles()
-|    Expression_de_relations()
-| 	 Expression()( < PartialFunction >|< TotalFunction >|< PartialInjection >|< TotalInjection >|< PartialSurjection >|< TotalSurjection >|< TotalBijection >) Expression()
-|    Construction_de_fonctions()
+	 Expression_primaire() ExpressionBis()
+|    Expression_booleenne() ExpressionBis()
+|    Expression_arithmetique() ExpressionBis()
+|    Expression_d_ensembles() ExpressionBis()
+|    Construction_d_ensembles() ExpressionBis()
+|    Expression_de_relations() ExpressionBis()
+|    Construction_de_fonctions() ExpressionBis()
 }
+
+void ExpressionBis() : { } {
+  ( < PartialFunction >|< TotalFunction >|< PartialInjection >|< TotalInjection >|< PartialSurjection >|< TotalSurjection >|< TotalBijection >|< Maplet >|< Comma >) Expression() ExpressionBis()
+| {}
+}   
 
 void Expression_primaire () #Expression_primaire : { } {
 	Donnee()
@@ -728,10 +730,6 @@ void ExpArithBis() : {} {
 |   {}
 }
 
-void Expression_de_couples() #Expression_de_couples : {} {
-	Couple()
-}
-
 void Expression_d_ensembles() #Expression_d_ensembles : {} {
 	Ensemble_vide()
 |   Ensemble_entier()
@@ -740,19 +738,14 @@ void Expression_d_ensembles() #Expression_d_ensembles : {} {
 }
 
 void Construction_d_ensembles() #Construction_d_ensembles : {} {
-	Expression() < Product > Expression() 
-|   Ens_comprehension()
+    <OpenBraces> ( < IDENTIFIER > (< Comma > < IDENTIFIER >)* < SuchAs > Predicat() | Expression() (< Comma > Expression())* )< CloseBraces > 
 |   Sous_ensembles()
 |   Sous_ensembles_finis()
-|   Ens_extension()
-|   Intervalle()
-|   Expression() < Minus > Expression()
-|  	Union()
-|   Intersection()
-|   Union_generalisee()
-|   Intersection_generalisee()
-|   Union_quantifiee()
-|   Intersection_quantifee()
+|	Expression() (< Product > | < In > | < Minus > | < Union > |< Intersection > ) Expression() 
+| 	< UnionGen > < OpenParen >  Expression() < CloseParen >
+| 	< InterGen > < OpenParen >  Expression() < CloseParen >
+| 	< UnionQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
+| 	< InterQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
 }
 
 
@@ -766,10 +759,10 @@ void Expression_de_relations() #Expression_de_relations : {} {
 }
 
 void Construction_de_fonctions() #Construction_de_fonctions : {} {
-	Lambda_expression()
-|	evaluation_fonction()
-|	Transformee_fonction()
-|	Transformee_relation()
+	< Lambda > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
+| 	Expression() < OpenParen >  Expression() < CloseParen >
+| 	< Fnc > < OpenParen >  Expression() < CloseParen >
+| 	< Rel > < OpenParen >  Expression() < CloseParen >
 }
 
 void Expr_parenthesee() #Expr_parenthesee : {} {
@@ -778,14 +771,6 @@ void Expr_parenthesee() #Expr_parenthesee : {} {
 
 void Conversion_bool() #Conversion_bool : {} {
 	< Bool > < OpenParen > Predicat() < CloseParen >
-}
-
-void Couple() #Couple : {} {
-	Expression()
-	(
-	  < Maplet > Expression()
-	|  < Comma > Expression()
-	)
 }
 
 void Ensemble_vide() #Ensemble_vide : {} {
@@ -809,10 +794,6 @@ void Ensemble_booleen() #Ensemble_booleen : {} {
 	< Bool >
 }
 
-void Ens_comprehension() #Ens_comprehension : {} {
-	<OpenBraces> < IDENTIFIER > (< Comma > < IDENTIFIER >)* < SuchAs > Predicat() <CloseBraces>
-}
-
 void Sous_ensembles() #Sous_ensembles : {} {
 	< POW > < OpenParen >  Expression() < CloseParen >
 |	< POW1 > < OpenParen >  Expression() < CloseParen >
@@ -821,47 +802,6 @@ void Sous_ensembles() #Sous_ensembles : {} {
 void Sous_ensembles_finis() #Sous_ensembles_finis : {} {
     < FIN > < OpenParen >  Expression() < CloseParen >
 |   < FIN1 > < OpenParen >  Expression() < CloseParen >
-}
-
-void Ens_extension() #Ens_extension : {} {
-	<OpenBraces> Expression() (< Comma > Expression())*  <CloseBraces>
-}
-
-void Intervalle() #Intervalle : {} {
-	Expression() < In > Expression()
-}
-
-void Union() #Union : {} {
-	Expression() < Union > Expression()
-}
-
-void Intersection() #Intersection : {} {
-	Expression() < Intersection > Expression()
-}
-
-void Union_generalisee() #Union_generalisee : {} {
-	< UnionGen > < OpenParen >  Expression() < CloseParen >
-}
-void Intersection_generalisee() #Intersection_generalisee : {} {
-	< InterGen > < OpenParen >  Expression() < CloseParen >
-}
-void Union_quantifiee() #Union_quantifiee : {} {
-	< UnionQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
-}
-void Intersection_quantifee() #Intersection_quantifiee : {} {
-	< InterQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
-}
-void Lambda_expression() #Lambda_expression() : {} {
-	< Lambda > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
-}
-void evaluation_fonction() #evaluation_fonction : {} {
-	Expression() < OpenParen >  Expression() < CloseParen >
-}
-void Transformee_fonction() #Transformee_fonction : {} {
-	< Fnc > < OpenParen >  Expression() < CloseParen >
-}
-void Transformee_relation() #Transformee_relation : {} {
-	< Rel > < OpenParen >  Expression() < CloseParen >
 }
 
 void Substitution() #Substitution : {} {
