@@ -684,7 +684,7 @@ void Expression() #Expression : { } {
 |    Expression_d_ensembles()
 |    Construction_d_ensembles()
 |    Expression_de_relations()
-|    Expression_de_fonctions()
+| 	 Expression()( < PartialFunction >|< TotalFunction >|< PartialInjection >|< TotalInjection >|< PartialSurjection >|< TotalSurjection >|< TotalBijection > Expression()
 |    Construction_de_fonctions()
 }
 
@@ -776,16 +776,6 @@ void Expression_de_relations() #Expression_de_relations : {} {
 |	Restriction_codomaine()
 |	Soustraction_codomaine()
 |	Surcharge()
-}
-
-void Expression_de_fonctions() #Expression_de_fonctions : {} {
-	Fonction_partielle()
-|	Fonction_totale()
-|	Injection_partielle()
-|	Injection_totale()
-|	Surjection_partielle()
-|	Surjection_totale()
-|	Bijection_totale()
 }
 
 void Construction_de_fonctions() #Construction_de_fonctions : {} {
@@ -937,27 +927,7 @@ void Soustraction_codomaine() #Soustraction_codomaine : {} {
 void Surcharge() #Surcharge : {} {
 	Expression() < Override > Expression()
 }
-void Fonction_partielle() #Fonction_partielle : {} {
-	Expression() < PartialFunction > Expression()
-}
-void Fonction_totale() #Fonction_totale : {} {
-	Expression() < TotalFunction > Expression()
-}
-void Injection_partielle() #Injection_partielle : {} {
-	Expression() < PartialInjection > Expression()
-}
-void Injection_totale() #Injection_totale : {} {
-	Expression() < TotalInjection > Expression()
-}
-void Surjection_partielle() #Surjection_partielle : {} {
-	Expression() < PartialSurjection > Expression()
-}
-void Surjection_totale() #Surjection_totale : {} {
-	Expression() < TotalSurjection > Expression()
-}
-void Bijection_totale() #Bijection_totale : {} {
-	Expression() < TotalBijection > Expression()
-}
+
 void Lambda_expression() #Lambda_expression() : {} {
 	< Lambda > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen >
 }
