@@ -684,7 +684,7 @@ void Expression() #Expression : { } {
 |    Expression_d_ensembles()
 |    Construction_d_ensembles()
 |    Expression_de_relations()
-| 	 Expression()( < PartialFunction >|< TotalFunction >|< PartialInjection >|< TotalInjection >|< PartialSurjection >|< TotalSurjection >|< TotalBijection > Expression()
+| 	 Expression()( < PartialFunction >|< TotalFunction >|< PartialInjection >|< TotalInjection >|< PartialSurjection >|< TotalSurjection >|< TotalBijection >) Expression()
 |    Construction_de_fonctions()
 }
 
