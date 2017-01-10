@@ -4,8 +4,8 @@ options {
 	VISITOR_EXCEPTION = "ParserBException";
 	NODE_DEFAULT_VOID=true;
 	MULTI = true;
+	LOOKAHEAD = 3;
 	FORCE_LA_CHECK = true;
-	LOOKAHEAD =3;
 }
 
 
@@ -374,7 +374,7 @@ void Operation() #Operation : {} {
 }
 
 void Entete_operation() #EnteteOperation : {} {
-	[<IDENTIFIER> (<SemiColon> <IDENTIFIER>)* <OperationReturn> ] Ident_ren()
+	[<IDENTIFIER> (<Comma> <IDENTIFIER>)* <OperationReturn> ] Ident_ren()
 	 [<OpenParen> <IDENTIFIER>(<Comma> <IDENTIFIER>)* <CloseParen>]
 }
 
@@ -507,26 +507,30 @@ void Instruction_assertion() #Instruction_assertion : {} {
 }
 
 void Predicat() #predicat : {} {
-	Predicat_Parenthese()
-| 	Predicat_Conjonction()
-| 	Predicat_Negation()
-| 	Predicat_Disjonction()
-|	Predicat_Implication()
-| 	Predicat_Equivalence()
-| 	Predicat_Universel()
-| 	Predicat_Existentiel()
-| 	Predicat_Egalite()
-| 	Predicat_Inegalite()
-| 	Predicat_Appartenance()
-| 	Predicat_Non_Appartenance()
-| 	Predicat_Inclusion()
-| 	Predicat_Inclusion_Stricte()
-| 	Predicat_Non_Inclusion()
-| 	Predicat_Non_Inclusion_Stricte()
-| 	Predicat_Inferieur_Ou_Egal()
-| 	Predicat_Strictement_Inferieur()
-| 	Predicat_Superieur_Ou_Egal()
-| 	Predicat_Strictement_Superieur()
+	Predicat_Parenthese() PredicatBis() 
+| 	Predicat_Negation() PredicatBis() 
+| 	Predicat_Universel() PredicatBis() 
+| 	Predicat_Existentiel() PredicatBis() 
+| 	Predicat_Egalite() PredicatBis() 
+| 	Predicat_Inegalite() PredicatBis() 
+| 	Predicat_Appartenance() PredicatBis() 
+| 	Predicat_Non_Appartenance() PredicatBis() 
+| 	Predicat_Inclusion() PredicatBis() 
+| 	Predicat_Inclusion_Stricte() PredicatBis() 
+| 	Predicat_Non_Inclusion() PredicatBis() 
+| 	Predicat_Non_Inclusion_Stricte() PredicatBis() 
+| 	Predicat_Inferieur_Ou_Egal() PredicatBis() 
+| 	Predicat_Strictement_Inferieur() PredicatBis() 
+| 	Predicat_Superieur_Ou_Egal() PredicatBis() 
+| 	Predicat_Strictement_Superieur()  PredicatBis() 
+}
+
+void PredicatBis() : { } {
+	< And > Predicat() PredicatBis() 
+| 	< Union > Predicat() PredicatBis() 
+| 	< Implication > Predicat() PredicatBis() 
+| 	< Equivalence > Predicat() PredicatBis() 
+| { }
 }
 
 void  Predicat_Parenthese() #Predicat_parenthese : {}{
@@ -535,90 +539,6 @@ void  Predicat_Parenthese() #Predicat_parenthese : {}{
 
 void  Predicat_Negation() #Predicat_Negation : {}{
 < Not > < OpenParen > Predicat() < CloseParen > 
-}
-
-void  Predicat_Conjonction() #Predicat_Conjonction : {}{
- 	Predicat_Parenthese() < And > Predicat() Predicat_binaire()
-| 	Predicat_Negation() < And > Predicat() Predicat_binaire()
-| 	Predicat_Universel() < And > Predicat() Predicat_binaire()
-| 	Predicat_Existentiel() < And > Predicat() Predicat_binaire()
-| 	Predicat_Egalite() < And > Predicat() Predicat_binaire()
-| 	Predicat_Inegalite() < And > Predicat() Predicat_binaire()
-| 	Predicat_Appartenance() < And > Predicat() Predicat_binaire()
-| 	Predicat_Non_Appartenance() < And > Predicat() Predicat_binaire()
-| 	Predicat_Inclusion() < And > Predicat() Predicat_binaire()
-| 	Predicat_Inclusion_Stricte() < And > Predicat() Predicat_binaire()
-| 	Predicat_Non_Inclusion() < And > Predicat() Predicat_binaire()
-| 	Predicat_Non_Inclusion_Stricte() < And > Predicat() Predicat_binaire()
-| 	Predicat_Inferieur_Ou_Egal() < And > Predicat() Predicat_binaire()
-| 	Predicat_Strictement_Inferieur() < And > Predicat() Predicat_binaire()
-| 	Predicat_Superieur_Ou_Egal() < And > Predicat() Predicat_binaire()
-| 	Predicat_Strictement_Superieur() < And > Predicat() Predicat_binaire()
-}
-
-void  Predicat_Disjonction() #Predicat_Disjonction : {}{
-	Predicat_Parenthese() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Negation() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Universel() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Existentiel() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Egalite() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Inegalite() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Appartenance() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Non_Appartenance() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Inclusion() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Inclusion_Stricte() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Non_Inclusion() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Non_Inclusion_Stricte() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Inferieur_Ou_Egal() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Strictement_Inferieur() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Superieur_Ou_Egal() < Union > Predicat()  Predicat_binaire()
-| 	Predicat_Strictement_Superieur() < Union > Predicat()  Predicat_binaire()
-}
-
-void  Predicat_Implication() #Predicat_Implication : {}{
- 	Predicat_Parenthese() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Negation() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Universel() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Existentiel() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Egalite() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Inegalite() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Appartenance() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Non_Appartenance() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Inclusion() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Inclusion_Stricte() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Non_Inclusion() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Non_Inclusion_Stricte() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Inferieur_Ou_Egal() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Strictement_Inferieur() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Superieur_Ou_Egal() < Implication >  Predicat() Predicat_binaire()
-| 	Predicat_Strictement_Superieur() < Implication >  Predicat() Predicat_binaire()
-}
-
-void  Predicat_Equivalence() #Predicat_Equivalence : {}{
- 	Predicat_Parenthese() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Negation() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Universel() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Existentiel() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Egalite() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Inegalite() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Appartenance() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Non_Appartenance() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Inclusion() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Inclusion_Stricte() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Non_Inclusion() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Non_Inclusion_Stricte() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Inferieur_Ou_Egal() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Strictement_Inferieur() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Superieur_Ou_Egal() < Equivalence >  Predicat() Predicat_binaire()
-| 	Predicat_Strictement_Superieur()  < Equivalence >  Predicat() Predicat_binaire()
-}
-
-void Predicat_binaire() #Predicat_binaire : {} {
-	< And > Predicat() Predicat_binaire()
-| 	< Union > Predicat()  Predicat_binaire()
-| 	< Implication >  Predicat() Predicat_binaire()
-| 	< Equivalence >  Predicat() Predicat_binaire()
-|	{}
 }
 
 void  Predicat_Universel() #Predicat_Universel : {}{
@@ -678,13 +598,13 @@ void  Predicat_Superieur_Ou_Egal() #Predicat_Superieur_Ou_Egal : {}{
 }
 
 void Expression() #Expression : { } {
-	 Expression_primaire() ExpressionBis()
-|    Expression_booleenne() ExpressionBis()
-|    Expression_arithmetique() ExpressionBis()
-|    Expression_d_ensembles() ExpressionBis()
-|    Construction_d_ensembles() ExpressionBis()
-|    Expression_de_relations() ExpressionBis()
-|    Construction_de_fonctions() ExpressionBis()
+	Expression_primaire() ExpressionBis()
+|   Expression_booleenne() ExpressionBis()
+|   Expression_arithmetique() ExpressionBis()
+|   Expression_d_ensembles() ExpressionBis()
+|   Construction_d_ensembles() ExpressionBis()
+|   Expression_de_relations() ExpressionBis()
+|   Construction_de_fonctions() ExpressionBis()
 }
 
 void ExpressionBis() : { } {
@@ -762,7 +682,7 @@ void ConstrEnsembleBis() : { } {
 
 void Construction_de_fonctions() #Construction_de_fonctions : {} {
 	< Lambda > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen > ConstrFonctionBis()
-|   <OpenBraces> ((< IDENTIFIER > (< Comma > < IDENTIFIER >)* < SuchAs > Predicat()) | (Expression() (< Comma > Expression())*) )< CloseBraces > ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
+|   < OpenBraces > ((< IDENTIFIER > (< Comma > < IDENTIFIER >)* < SuchAs > Predicat()) | (Expression() (< Comma > Expression())*) )< CloseBraces > ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
 | 	< UnionGen > < OpenParen >  Expression() < CloseParen > ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
 | 	< InterGen > < OpenParen >  Expression() < CloseParen > ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
 | 	< UnionQuant > Liste_ident() < Point > < OpenParen >  Predicat() < SuchAs > Expression() < CloseParen > ConstrEnsembleBis() ExpressionBis() < OpenParen >  Expression() < CloseParen > ConstrFonctionBis()
@@ -857,24 +777,28 @@ void Sous_ensembles_finis() #Sous_ensembles_finis : {} {
 }
 
 void Substitution() #Substitution : {} {
-	Substitution_bloc()
-|	Substitution_identite()
-|	Substitution_devient_egal()
-|	Substitution_precondition()
-|	Substitution_assertion()
-|	Substitution_choix_borne()
-|	Substitution_conditionnelle()
-|	Substitution_selection()
-|	Substitution_cas()
-|	Substitution_choix_non_borne()
-|	Substitution_definition_locale()
-|	Substitution_devient_elt_de()
-|	Substitution_devient_tel_que()
-|	Substitution_variable_locale()
-|	Substitution_sequence()
-|	Substitution_appel_operation()
-|	Substitution_simultanee()
-|	Substitution_tant_que()
+	Substitution_bloc() SubstitutionBis() 
+|	Substitution_identite() SubstitutionBis() 
+|	Substitution_devient_egal() SubstitutionBis() 
+|	Substitution_precondition() SubstitutionBis() 
+|	Substitution_assertion() SubstitutionBis() 
+|	Substitution_choix_borne() SubstitutionBis() 
+|	Substitution_conditionnelle() SubstitutionBis() 
+|	Substitution_selection() SubstitutionBis() 
+|	Substitution_cas() SubstitutionBis() 
+|	Substitution_choix_non_borne() SubstitutionBis() 
+|	Substitution_definition_locale() SubstitutionBis() 
+|	Substitution_devient_elt_de() SubstitutionBis() 
+|	Substitution_devient_tel_que() SubstitutionBis() 
+|	Substitution_variable_locale() SubstitutionBis() 
+|	Substitution_appel_operation()  SubstitutionBis() 
+|	Substitution_tant_que()  SubstitutionBis() 
+}
+
+void SubstitutionBis() : { } {
+ 	< SemiColon > Substitution() SubstitutionBis() 
+|	< Parallel > Substitution() SubstitutionBis() 
+| { }	
 }
 
 void Substitution_corps_operation() #Substitution_corps_operation : {} {
@@ -969,52 +893,8 @@ void Substitution_variable_locale() #Substitution_variable_locale : {} {
 	< Var > < IDENTIFIER >(< Comma > Ident_ren())* < InLetVar > Substitution() < End >
 }
 
-void Substitution_sequence() #Substitution_sequence : {} {
-	Substitution_bloc() Substitution_binaire()
-|	Substitution_identite() Substitution_binaire()
-|	Substitution_devient_egal() Substitution_binaire()
-|	Substitution_precondition() Substitution_binaire()
-|	Substitution_assertion() Substitution_binaire()
-|	Substitution_choix_borne() Substitution_binaire()
-|	Substitution_conditionnelle() Substitution_binaire()
-|	Substitution_selection() Substitution_binaire()
-|	Substitution_cas() Substitution_binaire()
-|	Substitution_choix_non_borne() Substitution_binaire()
-|	Substitution_definition_locale() Substitution_binaire()
-|	Substitution_devient_elt_de() Substitution_binaire()
-|	Substitution_devient_tel_que() Substitution_binaire()
-|	Substitution_variable_locale() Substitution_binaire()
-|	Substitution_appel_operation() Substitution_binaire()
-|	Substitution_tant_que() Substitution_binaire()
-}
-
 void Substitution_appel_operation() #Substitution_appel_operation : {} {
 	[ Ident_ren()(< Comma > Ident_ren())* < OperationReturn > ] Ident_ren() [ < OpenParen > Expression()(< Comma > Expression())* < CloseParen > ]
-}
-
-void Substitution_simultanee() #Substitution_simultanee : {} {
-	Substitution_bloc() Substitution_binaire()
-|	Substitution_identite() Substitution_binaire()
-|	Substitution_devient_egal() Substitution_binaire()
-|	Substitution_precondition() Substitution_binaire()
-|	Substitution_assertion() Substitution_binaire()
-|	Substitution_choix_borne() Substitution_binaire()
-|	Substitution_conditionnelle() Substitution_binaire()
-|	Substitution_selection() Substitution_binaire()
-|	Substitution_cas() Substitution_binaire()
-|	Substitution_choix_non_borne() Substitution_binaire()
-|	Substitution_definition_locale() Substitution_binaire()
-|	Substitution_devient_elt_de() Substitution_binaire()
-|	Substitution_devient_tel_que() Substitution_binaire()
-|	Substitution_variable_locale() Substitution_binaire()
-|	Substitution_appel_operation() Substitution_binaire()
-|	Substitution_tant_que() Substitution_binaire()
-}
-
-void Substitution_binaire() #Substitution_binaire : {} {
-	< SemiColon > Substitution()
-|	< Parallel > Substitution()
-|	{}	
 }
 
 void Liste_ident() #Liste_ident : {} {  
