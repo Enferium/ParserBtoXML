@@ -363,7 +363,7 @@ public class ParserBDefaultVisitor implements ParserBVisitor{
   public Object visit(ASTProduit_parallele node, Object data) throws ParserBException{
     return defaultVisit(node, data);
   }
-  public Object visit(ASTRestriction_Domaine node, Object data) throws ParserBException{
+  public Object visit(ASTRestriction_domaine node, Object data) throws ParserBException{
     return defaultVisit(node, data);
   }
   public Object visit(ASTSoustractions_domaine node, Object data) throws ParserBException{
@@ -403,6 +403,12 @@ public class ParserBDefaultVisitor implements ParserBVisitor{
     return defaultVisit(node, data);
   }
   public Object visit(ASTSubstitution node, Object data) throws ParserBException{
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTSubstitution_sequence node, Object data) throws ParserBException{
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTSubstitution_simultanee node, Object data) throws ParserBException{
     return defaultVisit(node, data);
   }
   public Object visit(ASTSubstitution_corps_operation node, Object data) throws ParserBException{
@@ -460,4 +466,4 @@ public class ParserBDefaultVisitor implements ParserBVisitor{
     return defaultVisit(node, data);
   }
 }
-/* JavaCC - OriginalChecksum=c2c2a55f04fd4bd4ffee647c32c317dd (do not edit this line) */
+/* JavaCC - OriginalChecksum=b945f590991227f4c8ea28e3fc8443a0 (do not edit this line) */

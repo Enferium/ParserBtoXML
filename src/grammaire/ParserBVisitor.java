@@ -122,7 +122,7 @@ public interface ParserBVisitor
   public Object visit(ASTComposition node, Object data) throws ParserBException;
   public Object visit(ASTProduit_direct node, Object data) throws ParserBException;
   public Object visit(ASTProduit_parallele node, Object data) throws ParserBException;
-  public Object visit(ASTRestriction_Domaine node, Object data) throws ParserBException;
+  public Object visit(ASTRestriction_domaine node, Object data) throws ParserBException;
   public Object visit(ASTSoustractions_domaine node, Object data) throws ParserBException;
   public Object visit(ASTRestriction_codomaine node, Object data) throws ParserBException;
   public Object visit(ASTSoustractions_codomaine node, Object data) throws ParserBException;
@@ -136,6 +136,8 @@ public interface ParserBVisitor
   public Object visit(ASTSous_ensembles node, Object data) throws ParserBException;
   public Object visit(ASTSous_ensembles_finis node, Object data) throws ParserBException;
   public Object visit(ASTSubstitution node, Object data) throws ParserBException;
+  public Object visit(ASTSubstitution_sequence node, Object data) throws ParserBException;
+  public Object visit(ASTSubstitution_simultanee node, Object data) throws ParserBException;
   public Object visit(ASTSubstitution_corps_operation node, Object data) throws ParserBException;
   public Object visit(ASTSubstitution_bloc node, Object data) throws ParserBException;
   public Object visit(ASTSubstitution_identite node, Object data) throws ParserBException;
@@ -155,4 +157,4 @@ public interface ParserBVisitor
   public Object visit(ASTListe_ident node, Object data) throws ParserBException;
   public Object visit(ASTEnsemble_simple node, Object data) throws ParserBException;
 }
-/* JavaCC - OriginalChecksum=8a9a9a9fe75b214bbf7e534db0680ea0 (do not edit this line) */
+/* JavaCC - OriginalChecksum=cecdb261ae336cc5895c6b4c1f5cd4bb (do not edit this line) */

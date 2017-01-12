@@ -136,24 +136,26 @@ public interface ParserBTreeConstants
   public int JJTSOUS_ENSEMBLES = 130;
   public int JJTSOUS_ENSEMBLES_FINIS = 131;
   public int JJTSUBSTITUTION = 132;
-  public int JJTSUBSTITUTION_CORPS_OPERATION = 133;
-  public int JJTSUBSTITUTION_BLOC = 134;
-  public int JJTSUBSTITUTION_IDENTITE = 135;
-  public int JJTSUBSTITUTION_DEVIENT_EGAL = 136;
-  public int JJTSUBSTITUTION_PRECONDITION = 137;
-  public int JJTSUBSTITUTION_ASSERTION = 138;
-  public int JJTSUBSTITUTION_CHOIX_BORNE = 139;
-  public int JJTSUBSTITUTION_CONDITIONNELLE = 140;
-  public int JJTSUBSTITUTION_SELECTION = 141;
-  public int JJTSUBSTITUTION_CAS = 142;
-  public int JJTSUBSTITUTION_CHOIX_NON_BORNE = 143;
-  public int JJTSUBSTITUTION_DEFINITION_LOCALE = 144;
-  public int JJTSUBSTITUTION_DEVIENT_ELT_DE = 145;
-  public int JJTSUBSTITUTION_DEVIENT_TEL_QUE = 146;
-  public int JJTSUBSTITUTION_VARIABLE_LOCALE = 147;
-  public int JJTSUBSTITUTION_APPEL_OPERATION = 148;
-  public int JJTLISTE_IDENT = 149;
-  public int JJTENSEMBLE_SIMPLE = 150;
+  public int JJTSUBSTITUTION_SEQUENCE = 133;
+  public int JJTSUBSTITUTION_SIMULTANEE = 134;
+  public int JJTSUBSTITUTION_CORPS_OPERATION = 135;
+  public int JJTSUBSTITUTION_BLOC = 136;
+  public int JJTSUBSTITUTION_IDENTITE = 137;
+  public int JJTSUBSTITUTION_DEVIENT_EGAL = 138;
+  public int JJTSUBSTITUTION_PRECONDITION = 139;
+  public int JJTSUBSTITUTION_ASSERTION = 140;
+  public int JJTSUBSTITUTION_CHOIX_BORNE = 141;
+  public int JJTSUBSTITUTION_CONDITIONNELLE = 142;
+  public int JJTSUBSTITUTION_SELECTION = 143;
+  public int JJTSUBSTITUTION_CAS = 144;
+  public int JJTSUBSTITUTION_CHOIX_NON_BORNE = 145;
+  public int JJTSUBSTITUTION_DEFINITION_LOCALE = 146;
+  public int JJTSUBSTITUTION_DEVIENT_ELT_DE = 147;
+  public int JJTSUBSTITUTION_DEVIENT_TEL_QUE = 148;
+  public int JJTSUBSTITUTION_VARIABLE_LOCALE = 149;
+  public int JJTSUBSTITUTION_APPEL_OPERATION = 150;
+  public int JJTLISTE_IDENT = 151;
+  public int JJTENSEMBLE_SIMPLE = 152;
 
 
   public String[] jjtNodeName = {
@@ -276,7 +278,7 @@ public interface ParserBTreeConstants
     "Composition",
     "Produit_direct",
     "Produit_parallele",
-    "Restriction_Domaine",
+    "Restriction_domaine",
     "Soustractions_domaine",
     "Restriction_codomaine",
     "Soustractions_codomaine",
@@ -290,6 +292,8 @@ public interface ParserBTreeConstants
     "Sous_ensembles",
     "Sous_ensembles_finis",
     "Substitution",
+    "Substitution_sequence",
+    "Substitution_simultanee",
     "Substitution_corps_operation",
     "Substitution_bloc",
     "Substitution_identite",
@@ -310,4 +314,4 @@ public interface ParserBTreeConstants
     "Ensemble_simple",
   };
 }
-/* JavaCC - OriginalChecksum=28fa9680188bfd02f1fecc2492838d24 (do not edit this line) */
+/* JavaCC - OriginalChecksum=bd2d70ec03255aba260a28af805425f8 (do not edit this line) */
