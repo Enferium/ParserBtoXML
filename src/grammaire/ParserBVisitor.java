@@ -109,8 +109,8 @@ public interface ParserBVisitor
   public Object visit(ASTConstruction_de_fonctions node, Object data) throws ParserBException;
   public Object visit(ASTLambda_expression node, Object data) throws ParserBException;
   public Object visit(ASTEns_comprehension node, Object data) throws ParserBException;
-  public Object visit(ASTTransformée_fonction node, Object data) throws ParserBException;
-  public Object visit(ASTTransformée_relation node, Object data) throws ParserBException;
+  public Object visit(ASTTransformee_fonction node, Object data) throws ParserBException;
+  public Object visit(ASTTransformee_relation node, Object data) throws ParserBException;
   public Object visit(ASTEvaluation_fonction node, Object data) throws ParserBException;
   public Object visit(ASTExpression_de_relations node, Object data) throws ParserBException;
   public Object visit(ASTIdentite node, Object data) throws ParserBException;
@@ -157,4 +157,4 @@ public interface ParserBVisitor
   public Object visit(ASTListe_ident node, Object data) throws ParserBException;
   public Object visit(ASTEnsemble_simple node, Object data) throws ParserBException;
 }
-/* JavaCC - OriginalChecksum=cecdb261ae336cc5895c6b4c1f5cd4bb (do not edit this line) */
+/* JavaCC - OriginalChecksum=22399bc56079a203bd5976d72e33c45e (do not edit this line) */

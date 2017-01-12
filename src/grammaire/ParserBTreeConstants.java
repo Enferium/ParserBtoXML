@@ -109,8 +109,8 @@ public interface ParserBTreeConstants
   public int JJTCONSTRUCTION_DE_FONCTIONS = 103;
   public int JJTLAMBDA_EXPRESSION = 104;
   public int JJTENS_COMPREHENSION = 105;
-  public int JJTTRANSFORMÉE_FONCTION = 106;
-  public int JJTTRANSFORMÉE_RELATION = 107;
+  public int JJTTRANSFORMEE_FONCTION = 106;
+  public int JJTTRANSFORMEE_RELATION = 107;
   public int JJTEVALUATION_FONCTION = 108;
   public int JJTEXPRESSION_DE_RELATIONS = 109;
   public int JJTIDENTITE = 110;
@@ -265,8 +265,8 @@ public interface ParserBTreeConstants
     "Construction_de_fonctions",
     "Lambda_expression",
     "Ens_comprehension",
-    "Transformée_fonction",
-    "Transformée_relation",
+    "Transformee_fonction",
+    "Transformee_relation",
     "Evaluation_fonction",
     "Expression_de_relations",
     "Identite",
@@ -314,4 +314,4 @@ public interface ParserBTreeConstants
     "Ensemble_simple",
   };
 }
-/* JavaCC - OriginalChecksum=bd2d70ec03255aba260a28af805425f8 (do not edit this line) */
+/* JavaCC - OriginalChecksum=e0f4ec7a21bf3f881eaab8e3e54bf766 (do not edit this line) */

@@ -3654,7 +3654,7 @@ if (jjtc006) {
         jj_consume_token(CloseParen);
         ConstrFonctionBis();
       } else if (jj_2_292(3)) {
-ASTTransformée_fonction jjtn007 = new ASTTransformée_fonction(JJTTRANSFORMÉE_FONCTION);
+ASTTransformee_fonction jjtn007 = new ASTTransformee_fonction(JJTTRANSFORMEE_FONCTION);
           boolean jjtc007 = true;
           jjtree.openNodeScope(jjtn007);
         try {
@@ -3669,7 +3669,7 @@ if (jjtc007) {
         jj_consume_token(CloseParen);
         ConstrFonctionBis();
       } else if (jj_2_293(3)) {
-ASTTransformée_relation jjtn008 = new ASTTransformée_relation(JJTTRANSFORMÉE_RELATION);
+ASTTransformee_relation jjtn008 = new ASTTransformee_relation(JJTTRANSFORMEE_RELATION);
           boolean jjtc008 = true;
           jjtree.openNodeScope(jjtn008);
         try {
@@ -8239,7 +8239,7 @@ if (jjtc285) {
         }
         ExprRelationBis();
       } else if (jj_2_1183(3)) {
-ASTTransformée_fonction jjtn286 = new ASTTransformée_fonction(JJTTRANSFORMÉE_FONCTION);
+ASTTransformee_fonction jjtn286 = new ASTTransformee_fonction(JJTTRANSFORMEE_FONCTION);
           boolean jjtc286 = true;
           jjtree.openNodeScope(jjtn286);
         try {
@@ -8590,7 +8590,7 @@ if (jjtc311) {
         }
         ExprRelationBis();
       } else if (jj_2_1184(3)) {
-ASTTransformée_relation jjtn312 = new ASTTransformée_relation(JJTTRANSFORMÉE_RELATION);
+ASTTransformee_relation jjtn312 = new ASTTransformee_relation(JJTTRANSFORMEE_RELATION);
           boolean jjtc312 = true;
           jjtree.openNodeScope(jjtn312);
         try {

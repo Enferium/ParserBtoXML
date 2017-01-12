@@ -165,3 +165,6 @@
 /parserB.jj
 /ASTSubstitution_sequence.java
 /ASTSubstitution_simultanee.java
+/ASTTransformee_fonction.java
+/ASTTransformee_relation.java
+/JJTParserBState.java

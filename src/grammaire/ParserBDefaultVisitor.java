@@ -324,10 +324,10 @@ public class ParserBDefaultVisitor implements ParserBVisitor{
   public Object visit(ASTEns_comprehension node, Object data) throws ParserBException{
     return defaultVisit(node, data);
   }
-  public Object visit(ASTTransformée_fonction node, Object data) throws ParserBException{
+  public Object visit(ASTTransformee_fonction node, Object data) throws ParserBException{
     return defaultVisit(node, data);
   }
-  public Object visit(ASTTransformée_relation node, Object data) throws ParserBException{
+  public Object visit(ASTTransformee_relation node, Object data) throws ParserBException{
     return defaultVisit(node, data);
   }
   public Object visit(ASTEvaluation_fonction node, Object data) throws ParserBException{
@@ -466,4 +466,4 @@ public class ParserBDefaultVisitor implements ParserBVisitor{
     return defaultVisit(node, data);
   }
 }
-/* JavaCC - OriginalChecksum=b945f590991227f4c8ea28e3fc8443a0 (do not edit this line) */
+/* JavaCC - OriginalChecksum=4a3a4b42e33560cc425bcec107114ea9 (do not edit this line) */
