@@ -12,20 +12,242 @@
       <CNumber val="0" />
     </CGreaterOrEqual>
   </INVARIANT>
+  <INITIALISATION>
+    <CAssignement>
+      <CVariable val="Statut" />
+      <CNumber val="0" />
+    </CAssignement>
+    <CParallel />
+    <CAssignement>
+      <CVariable val="Mago" />
+      <CNumber val="0" />
+    </CAssignement>
+    <CParallel />
+    <CAssignement>
+      <CVariable val="Balance" />
+      <CNumber val="0" />
+    </CAssignement>
+    <CParallel />
+    <CAssignement>
+      <CVariable val="CoffeeLeft" />
+      <CNumber val="100" />
+    </CAssignement>
+  </INITIALISATION>
   <EVENTS>
     <EVENT name="insert100">
       <Select>
-        <CEqual>
-          <CVariable val="Statut" />
-          <CNumber val="0" />
-        </CEqual>
+        <Guard>
+          <CEqual>
+            <CVariable val="Statut" />
+            <CNumber val="1" />
+          </CEqual>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="Balance" />
+            <CVariable val="Balance" />
+          </CAssignement>
+        </Then>
       </Select>
-      <Assignement>
-        <CAssignement>
-          <CVariable val="Balance" />
-          <CVariable val="Balance" />
-        </CAssignement>
-      </Assignement>
+    </EVENT>
+    <EVENT name="insert200">
+      <Select>
+        <Guard>
+          <CEqual>
+            <CVariable val="Statut" />
+            <CNumber val="1" />
+          </CEqual>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="Balance" />
+            <CVariable val="Balance" />
+          </CAssignement>
+        </Then>
+      </Select>
+    </EVENT>
+    <EVENT name="insert10">
+      <Select>
+        <Guard>
+          <CEqual>
+            <CVariable val="Statut" />
+            <CNumber val="1" />
+          </CEqual>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="Balance" />
+            <CVariable val="Balance" />
+          </CAssignement>
+        </Then>
+      </Select>
+    </EVENT>
+    <EVENT name="insert20">
+      <Select>
+        <Guard>
+          <CEqual>
+            <CVariable val="Statut" />
+            <CNumber val="1" />
+          </CEqual>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="Balance" />
+            <CVariable val="Balance" />
+          </CAssignement>
+        </Then>
+      </Select>
+    </EVENT>
+    <EVENT name="insert50">
+      <Select>
+        <Guard>
+          <CEqual>
+            <CVariable val="Statut" />
+            <CNumber val="1" />
+          </CEqual>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="Balance" />
+            <CVariable val="Balance" />
+          </CAssignement>
+        </Then>
+      </Select>
+    </EVENT>
+    <EVENT name="powerUp">
+      <Select>
+        <Guard>
+          <CEqual>
+            <CVariable val="Statut" />
+            <CNumber val="0" />
+          </CEqual>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="Statut" />
+            <CNumber val="1" />
+          </CAssignement>
+        </Then>
+      </Select>
+    </EVENT>
+    <EVENT name="powerDown">
+      <Select>
+        <Guard>
+          <CNot>
+            <CEqual>
+              <CVariable val="Statut" />
+              <CNumber val="0" />
+            </CEqual>
+          </CNot>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="Statut" />
+            <CNumber val="0" />
+          </CAssignement>
+        </Then>
+      </Select>
+    </EVENT>
+    <EVENT name="autoOut">
+      <Select>
+        <Guard>
+          <CEqual>
+            <CVariable val="CoffeeLeft" />
+            <CNumber val="0" />
+          </CEqual>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="Statut" />
+            <CNumber val="2" />
+          </CAssignement>
+          <CParallel />
+          <CAssignement>
+            <CVariable val="Balance" />
+            <CNumber val="0" />
+          </CAssignement>
+        </Then>
+      </Select>
+    </EVENT>
+    <EVENT name="takeMago">
+      <Select>
+        <Guard>
+          <CEqual>
+            <CVariable val="Statut" />
+            <CNumber val="0" />
+          </CEqual>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="Mago" />
+            <CNumber val="0" />
+          </CAssignement>
+        </Then>
+      </Select>
+    </EVENT>
+    <EVENT name="addCoffee">
+      <Any>
+        <CVariable val="x" />
+        <Where>
+          <CGreater>
+            <CVariable val="x" />
+            <CNumber val="0" />
+          </CGreater>
+        </Where>
+        <Then>
+          <Select>
+            <Guard>
+              <CEqual>
+                <CVariable val="Statut" />
+                <CNumber val="0" />
+              </CEqual>
+            </Guard>
+            <Then>
+              <CAssignement>
+                <CVariable val="CoffeeLeft" />
+                <CVariable val="CoffeeLeft" />
+              </CAssignement>
+            </Then>
+          </Select>
+        </Then>
+      </Any>
+    </EVENT>
+    <EVENT name="serveCoffee">
+      <Select>
+        <Guard>
+          <CEqual>
+            <CVariable val="Statut" />
+            <CNumber val="1" />
+          </CEqual>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="CoffeeLeft" />
+            <CVariable val="CoffeeLeft" />
+          </CAssignement>
+          <CParallel />
+          <CAssignement>
+            <CVariable val="Mago" />
+            <CVariable val="Mago" />
+          </CAssignement>
+        </Then>
+      </Select>
+    </EVENT>
+    <EVENT name="backBalance">
+      <Select>
+        <Guard>
+          <CEqual>
+            <CVariable val="Statut" />
+            <CNumber val="1" />
+          </CEqual>
+        </Guard>
+        <Then>
+          <CAssignement>
+            <CVariable val="Balance" />
+            <CNumber val="0" />
+          </CAssignement>
+        </Then>
+      </Select>
     </EVENT>
   </EVENTS>
 </MACHINE>

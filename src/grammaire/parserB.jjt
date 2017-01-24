@@ -387,8 +387,8 @@ void Terme_simple() #TermeSimple : {} {
 | 	<Boolean> <OpenParen> Condition() <CloseParen>
 }
 
-void Entier_lit() #Entier_Lit : {} {
-	<Number>
+void Entier_lit() #Entier_Lit : {Token t;} {
+	t=<Number> {jjtThis.setVal(t.image);}
 | 	<MaxInt>
 | 	<MinInt>
 }
@@ -800,7 +800,6 @@ void Substitution_corps_operation() #Substitution_corps_operation(>1) : {} {
 |	Substitution_identite()
 |	Substitution_devient_egal()
 |	Substitution_precondition()
-|	Substitution_assertion()
 |	Substitution_choix_borne()
 |	Substitution_conditionnelle()
 |	Substitution_selection()
@@ -865,8 +864,8 @@ void Substitution_cas() #Substitution_cas : {} {
 	< End >
 }
 
-void Substitution_choix_non_borne() #Substitution_choix_non_borne : {} {
-	< Any > < IDENTIFIER > (< Comma > < IDENTIFIER >)* < Where > Predicat() < Then > Substitution() < End >
+void Substitution_choix_non_borne() #Substitution_choix_non_borne : {Token t;} {
+	< Any > t=< IDENTIFIER > {jjtThis.setIdent(t.image);} (< Comma > < IDENTIFIER >)* < Where > Predicat() < Then > Substitution() < End >
 }
 
 void Substitution_definition_locale() #Substitution_definition_locale : {} {

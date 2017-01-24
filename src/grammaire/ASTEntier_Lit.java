@@ -13,8 +13,8 @@ public class ASTEntier_Lit extends SimpleNode {
 		super(p, id);
 	}
 
-	public void setVal(int v) {
-		val = v;
+	public void setVal(String v) {
+		val = Integer.parseInt(v);
 	}
 
 	public int getVal() {

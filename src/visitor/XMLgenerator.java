@@ -53,8 +53,7 @@ public class XMLgenerator implements ParserBVisitor {
 			Attribute val = new Attribute("val", node.getIdent());
 			var.setAttribute(val);
 		}
-			
-
+	
 		return null;
 	}
 
@@ -144,8 +143,15 @@ public class XMLgenerator implements ParserBVisitor {
 	}
 
 	public Object visit(ASTInitialisation node, Object data) throws ParserBException {
-		throw new UnimplementedNodeException("");
-		//return null;
+		Element init = new Element("INITIALISATION");
+		racine.addContent(init);
+
+		int i = 0, childs = node.jjtGetNumChildren();
+		while (i < childs) {
+			node.jjtGetChild(i).jjtAccept(this, init);
+			i++;
+		}
+		return null;
 	}
 
 	public Object visit(ASTOperations node, Object data) throws ParserBException {
@@ -349,13 +355,24 @@ public class XMLgenerator implements ParserBVisitor {
 	}
 
 	public Object visit(ASTPredicat_parenthese node, Object data) throws ParserBException {
-		throw new UnimplementedNodeException("");
-		//return null;
+		int i = 0, childs = node.jjtGetNumChildren();
+		while (i < childs) {
+			node.jjtGetChild(i).jjtAccept(this, data);
+			i++;
+		}
+		return null;
 	}
 
 	public Object visit(ASTPredicat_Negation node, Object data) throws ParserBException {
-		throw new UnimplementedNodeException("");
-		//return null;
+		Element neg = new Element("CNot");
+		((Element) data).addContent(neg);
+		
+		int i = 0, childs = node.jjtGetNumChildren();
+		while (i < childs) {
+			node.jjtGetChild(i).jjtAccept(this, neg);
+			i++;
+		}
+		return null;
 	}
 
 	public Object visit(ASTPredicat_Universel node, Object data) throws ParserBException {
@@ -798,8 +815,12 @@ public class XMLgenerator implements ParserBVisitor {
 	}
 
 	public Object visit(ASTSubstitution node, Object data) throws ParserBException {
-		throw new UnimplementedNodeException("");
-		//return null;
+		int i = 0, childs = node.jjtGetNumChildren();
+		while (i < childs) {
+			node.jjtGetChild(i).jjtAccept(this, data);
+			i++;
+		}
+		return null;
 	}
 
 	public Object visit(ASTSubstitution_sequence node, Object data) throws ParserBException {
@@ -808,8 +829,15 @@ public class XMLgenerator implements ParserBVisitor {
 	}
 
 	public Object visit(ASTSubstitution_simultanee node, Object data) throws ParserBException {
-		throw new UnimplementedNodeException("");
-		//return null;
+		Element par = new Element("CParallel");
+		((Element) data).addContent(par);
+		
+		int i = 0, childs = node.jjtGetNumChildren();
+		while (i < childs) {
+			node.jjtGetChild(i).jjtAccept(this, par);
+			i++;
+		}
+		return null;
 	}
 
 	public Object visit(ASTSubstitution_corps_operation node, Object data) throws ParserBException {
@@ -867,12 +895,13 @@ public class XMLgenerator implements ParserBVisitor {
 		Element select = new Element("Select");
 		((Element) data).addContent(select);
 		
-		node.jjtGetChild(0).jjtAccept(this, select);
+		Element guard = new Element("Guard");
+		select.addContent(guard);
+		node.jjtGetChild(0).jjtAccept(this, guard);
 		
-		Element assign = new Element("Assignement");
-		((Element) data).addContent(assign);
-		
-		node.jjtGetChild(1).jjtAccept(this, assign);
+		Element then = new Element("Then");
+		select.addContent(then);
+		node.jjtGetChild(1).jjtAccept(this, then);
 	
 		return null;
 	}
@@ -883,8 +912,22 @@ public class XMLgenerator implements ParserBVisitor {
 	}
 
 	public Object visit(ASTSubstitution_choix_non_borne node, Object data) throws ParserBException {
-		throw new UnimplementedNodeException("");
-		//return null;
+		Element any = new Element("Any");
+		((Element) data).addContent(any);
+		
+		Element var = new Element("CVariable");
+		any.addContent(var);
+		Attribute val = new Attribute("val", node.getIdent());
+		var.setAttribute(val);
+		
+		Element wh = new Element("Where");
+		any.addContent(wh);
+		node.jjtGetChild(0).jjtAccept(this, wh);
+		
+		Element then = new Element("Then");
+		any.addContent(then);
+		node.jjtGetChild(1).jjtAccept(this, then);
+		return null;
 	}
 
 	public Object visit(ASTSubstitution_definition_locale node, Object data) throws ParserBException {

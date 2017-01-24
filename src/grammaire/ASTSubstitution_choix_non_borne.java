@@ -2,22 +2,36 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=true,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package grammaire;
 
-public
-class ASTSubstitution_choix_non_borne extends SimpleNode {
-  public ASTSubstitution_choix_non_borne(int id) {
-    super(id);
-  }
+public class ASTSubstitution_choix_non_borne extends SimpleNode {
+	private String ident;
 
-  public ASTSubstitution_choix_non_borne(ParserB p, int id) {
-    super(p, id);
-  }
+	public ASTSubstitution_choix_non_borne(int id) {
+		super(id);
+	}
 
+	public ASTSubstitution_choix_non_borne(ParserB p, int id) {
+		super(p, id);
+	}
 
-  /** Accept the visitor. **/
-  public Object jjtAccept(ParserBVisitor visitor, Object data) throws ParserBException {
+	public void setIdent(String i) {
+		ident = i;
+	}
 
-    return
-    visitor.visit(this, data);
-  }
+	public String getIdent() {
+		return ident;
+	}
+
+	public String toString() {
+		return "Identifiant : " + ident;
+	}
+
+	/** Accept the visitor. **/
+	public Object jjtAccept(ParserBVisitor visitor, Object data) throws ParserBException {
+
+		return visitor.visit(this, data);
+	}
 }
-/* JavaCC - OriginalChecksum=80398191737be4740726d7ead43ce2e5 (do not edit this line) */
+/*
+ * JavaCC - OriginalChecksum=80398191737be4740726d7ead43ce2e5 (do not edit this
+ * line)
+ */
