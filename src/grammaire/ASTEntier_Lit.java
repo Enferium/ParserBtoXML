@@ -2,22 +2,36 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=true,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package grammaire;
 
-public
-class ASTEntier_Lit extends SimpleNode {
-  public ASTEntier_Lit(int id) {
-    super(id);
-  }
+public class ASTEntier_Lit extends SimpleNode {
+	private int val;
 
-  public ASTEntier_Lit(ParserB p, int id) {
-    super(p, id);
-  }
+	public ASTEntier_Lit(int id) {
+		super(id);
+	}
 
+	public ASTEntier_Lit(ParserB p, int id) {
+		super(p, id);
+	}
 
-  /** Accept the visitor. **/
-  public Object jjtAccept(ParserBVisitor visitor, Object data) throws ParserBException {
+	public void setVal(int v) {
+		val = v;
+	}
 
-    return
-    visitor.visit(this, data);
-  }
+	public int getVal() {
+		return val;
+	}
+
+	public String toString() {
+		return "Entier : " + val;
+	}
+
+	/** Accept the visitor. **/
+	public Object jjtAccept(ParserBVisitor visitor, Object data) throws ParserBException {
+
+		return visitor.visit(this, data);
+	}
 }
-/* JavaCC - OriginalChecksum=331bcf22ea2efec672c39cc62a762ddf (do not edit this line) */
+/*
+ * JavaCC - OriginalChecksum=331bcf22ea2efec672c39cc62a762ddf (do not edit this
+ * line)
+ */

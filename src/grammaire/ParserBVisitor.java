@@ -4,7 +4,6 @@ package grammaire;
 public interface ParserBVisitor
 {
   public Object visit(SimpleNode node, Object data) throws ParserBException;
-  public Object visit(ASTStart node, Object data) throws ParserBException;
   public Object visit(ASTIdent_ren node, Object data) throws ParserBException;
   public Object visit(ASTMachine node, Object data) throws ParserBException;
   public Object visit(ASTEnTete node, Object data) throws ParserBException;
@@ -157,4 +156,4 @@ public interface ParserBVisitor
   public Object visit(ASTListe_ident node, Object data) throws ParserBException;
   public Object visit(ASTEnsemble_simple node, Object data) throws ParserBException;
 }
-/* JavaCC - OriginalChecksum=22399bc56079a203bd5976d72e33c45e (do not edit this line) */
+/* JavaCC - OriginalChecksum=b70db9e1e3afb6cc441d303682e28a1e (do not edit this line) */

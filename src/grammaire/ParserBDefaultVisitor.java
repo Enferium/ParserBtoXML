@@ -9,9 +9,6 @@ public class ParserBDefaultVisitor implements ParserBVisitor{
   public Object visit(SimpleNode node, Object data) throws ParserBException{
     return defaultVisit(node, data);
   }
-  public Object visit(ASTStart node, Object data) throws ParserBException{
-    return defaultVisit(node, data);
-  }
   public Object visit(ASTIdent_ren node, Object data) throws ParserBException{
     return defaultVisit(node, data);
   }
@@ -466,4 +463,4 @@ public class ParserBDefaultVisitor implements ParserBVisitor{
     return defaultVisit(node, data);
   }
 }
-/* JavaCC - OriginalChecksum=4a3a4b42e33560cc425bcec107114ea9 (do not edit this line) */
+/* JavaCC - OriginalChecksum=091eb44143b4e11a9ec39fb6339b3d3d (do not edit this line) */

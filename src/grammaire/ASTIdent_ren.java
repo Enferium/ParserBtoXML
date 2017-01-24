@@ -2,22 +2,37 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=true,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 package grammaire;
 
-public
-class ASTIdent_ren extends SimpleNode {
-  public ASTIdent_ren(int id) {
-    super(id);
-  }
+public class ASTIdent_ren extends SimpleNode {
 
-  public ASTIdent_ren(ParserB p, int id) {
-    super(p, id);
-  }
+	private String ident;
 
+	public ASTIdent_ren(int id) {
+		super(id);
+	}
 
-  /** Accept the visitor. **/
-  public Object jjtAccept(ParserBVisitor visitor, Object data) throws ParserBException {
+	public ASTIdent_ren(ParserB p, int id) {
+		super(p, id);
+	}
 
-    return
-    visitor.visit(this, data);
-  }
+	public void setIdent(String i) {
+		ident = i;
+	}
+
+	public String getIdent() {
+		return ident;
+	}
+
+	public String toString() {
+		return "Identifiant : " + ident;
+	}
+
+	/** Accept the visitor. **/
+	public Object jjtAccept(ParserBVisitor visitor, Object data) throws ParserBException {
+
+		return visitor.visit(this, data);
+	}
 }
-/* JavaCC - OriginalChecksum=40a43de9f38e9e084ce25907a8c99e92 (do not edit this line) */
+/*
+ * JavaCC - OriginalChecksum=40a43de9f38e9e084ce25907a8c99e92 (do not edit this
+ * line)
+ */

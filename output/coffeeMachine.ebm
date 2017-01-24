@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MACHINE name="CoffeeMachine">
+  <VARIABLES>
+    <CVariable val="Mago" />
+    <CVariable val="Balance" />
+    <CVariable val="CoffeeLeft" />
+    <CVariable val="Statut" />
+  </VARIABLES>
+  <INVARIANT>
+    <CGreaterOrEqual>
+      <CVariable val="Mago" />
+      <CNumber val="0" />
+    </CGreaterOrEqual>
+  </INVARIANT>
+  <EVENTS>
+    <EVENT name="insert100">
+      <Select>
+        <CEqual>
+          <CVariable val="Statut" />
+          <CNumber val="0" />
+        </CEqual>
+      </Select>
+      <Assignement>
+        <CAssignement>
+          <CVariable val="Balance" />
+          <CVariable val="Balance" />
+        </CAssignement>
+      </Assignement>
+    </EVENT>
+  </EVENTS>
+</MACHINE>
